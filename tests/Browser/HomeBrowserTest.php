@@ -9,6 +9,12 @@ test('page passes smoke test (no JS errors and console logs)', function () {
     visit('/')->assertNoSmoke();
 });
 
+it('renders the homepage title correctly', function () {
+    $page = visit(route('home'));
+
+    $page->assertTitle(config('app.name'));
+});
+
 it('shows no posts yet message when there are no posts', function () {
     $page = visit(route('home'));
 
@@ -53,23 +59,10 @@ it('paginates the published blog posts', function () {
     }
 
     $page->assertDontSee($posts[10]->title)
-        ->assertSourceMissing('<a href="'.route('home',['page' => 1,]).'">Next</a>')
-        ->assertSourceHas('<a href="'.route('home',['page' => 2,]).'">Next</a>');
-});
-
-it('paginates the next page', function () {
-    $postCount = 11;
-    $posts = PostFactory::times($postCount)->create([
-        'status' => PostStatus::Published,
-    ]);
-
-    $page = visit(route('home', ['page' => 2]));
-
-    for ($i = 0; $i < ($postCount - 1); ++$i) {
-        $page->assertDontSee($posts[$i]->title);
-    }
-
-    $page->assertSee($posts[10]->title)
-        ->assertSourceMissing('<a href="'.route('home',['page' => 2,]).'">Next</a>')
-        ->assertSourceHas('<a href="'.route('home',['page' => 1,]).'">Prev</a>');
+        ->assertDontSeeLink('Prev')
+        ->assertSeeLink('Next')
+        ->click('Next')
+        ->assertSee($posts[10]->title)
+        ->assertSeeLink('Prev')
+        ->assertDontSeeLink('Next');
 });

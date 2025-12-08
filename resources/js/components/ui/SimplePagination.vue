@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { Link } from '@inertiajs/vue3';
+
 defineProps({
     nextUrl: {
         type: String,
@@ -13,7 +15,7 @@ defineProps({
 
 <template>
     <nav>
-        <a :href="prevUrl" v-if="prevUrl">Prev</a>
-        <a :href="nextUrl" v-if="nextUrl">Next</a>
+        <Link :href="prevUrl" v-if="prevUrl">Prev</Link>
+        <Link :href="nextUrl" v-if="nextUrl">Next</Link>
     </nav>
 </template>

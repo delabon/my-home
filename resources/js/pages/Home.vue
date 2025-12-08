@@ -11,10 +11,7 @@ defineProps({
 </script>
 
 <template>
-    <Head title="Welcome">
-        <link rel="preconnect" href="https://rsms.me/" />
-        <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
-    </Head>
+    <Head title="Welcome"/>
     <div>
         <div v-if="posts.data.length > 0">
             <article v-for="post in posts.data" :key="post.id">
