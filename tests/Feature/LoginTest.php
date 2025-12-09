@@ -3,6 +3,16 @@
 declare(strict_types=1);
 
 use Database\Factories\UserFactory;
+use Inertia\Testing\AssertableInertia;
+
+it('renders the login page', function () {
+    $response = $this->get(route('login'));
+
+    $response->assertOk()
+        ->assertInertia(fn (AssertableInertia $component) => $component
+            ->component('auth/Login')
+        );
+});
 
 it('signs in successfully', function () {
     $password = '12345678';

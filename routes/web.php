@@ -10,7 +10,7 @@ Route::post('login', [LoginController::class, 'store'])
     ->middleware(['guest'])
     ->name('login.store');
 
-Route::get('login', function () {})
+Route::inertia('login', 'auth/Login')
     ->middleware(['guest'])
     ->name('login');
 
