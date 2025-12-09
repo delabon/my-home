@@ -17,6 +17,8 @@ it('logs-in a user successfully', function () {
         'email' => $user->email,
         'password' => $password,
     ]);
+    $validator = validator($request->all(), $request->rules());
+    $request->setValidator($validator);
     $request->setLaravelSession($sessionStore);
     $controller = new LoginController();
 
@@ -43,6 +45,8 @@ it('fails to log-in a user when email does not exist', function () {
         'email' => $user->email,
         'password' => 'ksjdi93219',
     ]);
+    $validator = validator($request->all(), $request->rules());
+    $request->setValidator($validator);
     $request->setLaravelSession($sessionStore);
     $controller = new LoginController();
 
@@ -64,6 +68,8 @@ it('fails to log-in a user when password is invalid', function () {
         'email' => 'does-not-exist@test.cc',
         'password' => '12341234',
     ]);
+    $validator = validator($request->all(), $request->rules());
+    $request->setValidator($validator);
     $request->setLaravelSession($sessionStore);
     $controller = new LoginController();
 
