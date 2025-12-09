@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { Head } from '@inertiajs/vue3';
 import SimplePagination from "@/components/ui/SimplePagination.vue";
 
 defineProps({
@@ -11,7 +10,6 @@ defineProps({
 </script>
 
 <template>
-    <Head title="Welcome"/>
     <div>
         <div v-if="posts.data.length > 0">
             <article v-for="post in posts.data" :key="post.id">
