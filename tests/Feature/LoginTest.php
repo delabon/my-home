@@ -53,7 +53,7 @@ it('signs in a different user successfully', function () {
     expect(auth()->user()->id)->toBe($user->id);
 });
 
-test('trying to sign-in while already signed-in returns a redirect to login page response', function () {
+test('trying to sign-in while already signed-in returns a redirect response to dashboard page', function () {
     $password = 'kwer1234';
     $user = UserFactory::new()->create([
         'email' => 'mike@jordon.com',
@@ -80,7 +80,7 @@ test('trying to sign-in while already signed-in returns a redirect to login page
         'password' => $anotherPassword
     ]);
 
-    $newResponse->assertRedirectToRoute('login');
+    $newResponse->assertRedirectToRoute('dashboard');
     $this->assertAuthenticated();
     expect(auth()->user()->id)->toBe($user->id);
 });
