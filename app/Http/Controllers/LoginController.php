@@ -12,7 +12,7 @@ final class LoginController extends Controller
 {
     public function store(LoginRequest $request): RedirectResponse
     {
-        $succeeded = Auth::attempt($request->all());
+        $succeeded = Auth::attempt($request->validated());
 
         if (! $succeeded) {
             return to_route('login')->withErrors([

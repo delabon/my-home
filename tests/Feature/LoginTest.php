@@ -194,3 +194,23 @@ test('trying to sign-in with a bad email', function () {
         'email' => 'Failed to login, please check your email and/or password.',
     ]);
 });
+
+it('returns too many requests response when trying to brute force the login end point', function () {
+    for ($i = 0; $i < 5; $i++) {
+        $response = $this->post(route('login.store'), [
+            'email' => 'bad.email@test.cc',
+            'password' => '12341234',
+        ]);
+
+        $response->assertRedirect(route('login'));
+        $this->assertGuest();
+    }
+
+    $response = $this->post(route('login.store'), [
+        'email' => 'bad.email@test.cc',
+        'password' => '12341234',
+    ]);
+
+    $response->assertTooManyRequests();
+    $this->assertGuest();
+});

@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', HomeController::class)->name('home');
 
 Route::post('login', [LoginController::class, 'store'])
-    ->middleware(['guest'])
+    ->middleware(['guest', 'throttle:5,1']) // 5 attempts per minute
     ->name('login.store');
 
 Route::inertia('login', 'auth/Login')
