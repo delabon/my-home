@@ -7,15 +7,20 @@ use App\Http\Requests\LoginRequest;
 use Database\Factories\UserFactory;
 use Illuminate\Http\RedirectResponse;
 
+const TEST_VALID_PASSWORD = '12345678';
+const TEST_INVALID_PASSWORD = 'wrong-password';
+const TEST_NON_EXISTENT_EMAIL = 'non-existent@test.cc';
+const TEST_VALID_EMAIL = 'john@doe.cc';
+
 it('logs-in a user successfully', function () {
-    $password = '12345678';
     $user = UserFactory::new()->create([
-        'password' => $password,
+        'email' => TEST_VALID_EMAIL,
+        'password' => TEST_VALID_PASSWORD,
     ]);
     $sessionStore = app('session.store');
     $request = LoginRequest::create('/login', 'POST', [
-        'email' => $user->email,
-        'password' => $password,
+        'email' => TEST_VALID_EMAIL,
+        'password' => TEST_VALID_PASSWORD,
     ]);
     $validator = validator($request->all(), $request->rules());
     $request->setValidator($validator);
@@ -36,14 +41,10 @@ it('logs-in a user successfully', function () {
 });
 
 it('fails to log-in a user when email does not exist', function () {
-    $password = '12345678';
-    $user = UserFactory::new()->create([
-        'password' => $password,
-    ]);
     $sessionStore = app('session.store');
     $request = LoginRequest::create('/login', 'POST', [
-        'email' => $user->email,
-        'password' => 'ksjdi93219',
+        'email' => TEST_NON_EXISTENT_EMAIL,
+        'password' => TEST_VALID_PASSWORD,
     ]);
     $validator = validator($request->all(), $request->rules());
     $request->setValidator($validator);
@@ -63,10 +64,14 @@ it('fails to log-in a user when email does not exist', function () {
 });
 
 it('fails to log-in a user when password is invalid', function () {
+    $user = UserFactory::new()->create([
+        'email' => TEST_VALID_EMAIL,
+        'password' => TEST_VALID_PASSWORD,
+    ]);
     $sessionStore = app('session.store');
     $request = LoginRequest::create('/login', 'POST', [
-        'email' => 'does-not-exist@test.cc',
-        'password' => '12341234',
+        'email' => TEST_VALID_EMAIL,
+        'password' => TEST_INVALID_PASSWORD,
     ]);
     $validator = validator($request->all(), $request->rules());
     $request->setValidator($validator);
