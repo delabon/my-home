@@ -16,3 +16,5 @@ Route::inertia('login', 'auth/Login')
 
 Route::get('dashboard', function () {})
     ->name('dashboard');
+
+Route::get('/', HomeController::class)->name('home');
