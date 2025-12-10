@@ -2,6 +2,7 @@
 import { Head, Form } from '@inertiajs/vue3';
 import Input from "@/components/ui/Input.vue";
 import Button from "@/components/ui/Button.vue";
+import { login } from "@/routes";
 
 </script>
 
@@ -11,7 +12,7 @@ import Button from "@/components/ui/Button.vue";
         <h1>Login</h1>
 
         <Form
-            action="/login"
+            :action="login().url"
             method="post"
             #default="{
                 errors,
