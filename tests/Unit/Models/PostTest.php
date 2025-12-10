@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 use App\Enums\PostStatus;
 use App\Models\User;
-use Database\Factories\PostFactory;
-use Database\Factories\UserFactory;
+use Tests\NewPost;
+use Tests\NewUser;
 
 test('to array', function () {
-    $post = PostFactory::new()->create();
+    $post = new NewPost([
+        'status' => PostStatus::Draft->value,
+    ])->first();
 
     expect($post->toArray())->toHaveKeys([
         'id',
@@ -22,16 +24,18 @@ test('to array', function () {
 });
 
 it('casts status into PostStatus enum', function () {
-    $post = PostFactory::new()->create();
+    $post = new NewPost([
+        'status' => PostStatus::Draft->value,
+    ])->first();
 
     expect($post->status)->toBeInstanceOf(PostStatus::class);
 });
 
 it('belongs to a user', function () {
-    $user = UserFactory::new()->create();
-    $post = PostFactory::new()->create([
+    $user = new NewUser()->user;
+    $post = new NewPost([
         'user_id' => $user->id,
-    ]);
+    ])->first();
 
     expect($post->user)->toBeInstanceOf(User::class)
         ->and($post->user->id)->toBe($user->id);

@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 use App\Actions\PaginatePostsAction;
 use App\Enums\PostStatus;
-use Database\Factories\PostFactory;
 use Illuminate\Pagination\Paginator;
+use Tests\NewPost;
 
 it('paginates published posts successfully', function () {
-    $posts = PostFactory::times(3)->create([
-        'status' => PostStatus::Published->value
-    ]);
+    $posts = new NewPost([
+        'status' => PostStatus::Published->value,
+    ], 3)->posts;
     $action = new PaginatePostsAction();
 
     $paginatedPosts = $action->execute(perPage: 2);
@@ -40,9 +40,9 @@ it('paginates published posts successfully', function () {
 });
 
 it('paginates posts number smaller than per page', function () {
-    $post = PostFactory::new()->create([
-        'status' => PostStatus::Published->value
-    ]);
+    $post = new NewPost([
+        'status' => PostStatus::Published->value,
+    ])->first();
     $action = new PaginatePostsAction();
 
     $paginatedPosts = $action->execute(perPage: 33);
@@ -95,9 +95,9 @@ it('paginates successfully even without posts', function () {
 });
 
 it('paginates the next page', function () {
-    $posts = PostFactory::times(3)->create([
-        'status' => PostStatus::Published->value
-    ]);
+    $posts = new NewPost([
+        'status' => PostStatus::Published->value,
+    ], 3)->posts;
     Paginator::currentPageResolver(static fn () => 2);
     $action = new PaginatePostsAction();
 
