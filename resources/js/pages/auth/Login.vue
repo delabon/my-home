@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Head, Form } from '@inertiajs/vue3';
+import Input from "@/components/ui/Input.vue";
 
 </script>
 
@@ -18,21 +19,21 @@ import { Head, Form } from '@inertiajs/vue3';
             class="flex flex-col gap-4 mt-6"
             resetOnSuccess
         >
-            <label class="flex flex-col gap-2">
-                <strong>Email</strong>
-                <Input type="email" placeholder="john@example.com" name="email"/>
-                <div v-if="errors.email" class="text-red-500">
-                    {{ errors.email }}
-                </div>
-            </label>
+            <Input
+                label="Email"
+                type="email"
+                placeholder="john@example.com"
+                name="email"
+                :error="errors.email"
+            />
 
-            <label class="flex flex-col gap-2">
-                <strong>Password</strong>
-                <Input type="password" placeholder="********" name="password"/>
-                <div v-if="errors.password" class="text-red-500">
-                    {{ errors.password }}
-                </div>
-            </label>
+            <Input
+                label="Password"
+                type="password"
+                placeholder="********"
+                name="password"
+                :error="errors.password"
+            />
 
             <button class="cursor-pointer" type="submit">
                 {{ processing ? "Signing-in..." : "Sign-In" }}
