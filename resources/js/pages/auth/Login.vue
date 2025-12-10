@@ -36,6 +36,7 @@ import { login } from "@/routes";
                 placeholder="********"
                 name="password"
                 :error="errors.password"
+                autocomplete="current-password"
             />
 
             <Button
