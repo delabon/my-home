@@ -12,6 +12,7 @@ final class LogoutAction
     public function execute(): void
     {
         Auth::logout();
+        Session::invalidate();
         Session::regenerate();
     }
 }

@@ -11,6 +11,10 @@ it('logs out a user and regenerate the session', function () {
         ->once()
         ->andReturnNull();
 
+    Session::shouldReceive('invalidate')
+        ->once()
+        ->andReturnNull();
+
     Session::shouldReceive('regenerate')
         ->once()
         ->andReturnNull();
