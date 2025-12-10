@@ -16,7 +16,7 @@ Route::prefix('login')->middleware(['guest'])->group(function () {
 });
 
 Route::post('logout', [LoginController::class, 'destroy'])
-    ->middleware('throttle:5,1') // 5 attempts per minute
+    ->middleware(['auth', 'throttle:5,1']) // 5 attempts per minute
     ->name('logout');
 
 Route::get('dashboard', function () {})
