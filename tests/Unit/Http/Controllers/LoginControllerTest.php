@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Actions\Auth\LoginAction;
 use App\Http\Controllers\LoginController;
 use App\Http\Requests\LoginRequest;
 use Illuminate\Http\RedirectResponse;
@@ -21,7 +22,7 @@ it('logs-in a user successfully', function () {
 
     $oldSessionId = session()->id();
 
-    $response = $controller->store($request);
+    $response = $controller->store($request, new LoginAction());
 
     $newSessionId = session()->id();
 
@@ -45,7 +46,7 @@ it('fails to log-in a user when email does not exist', function () {
 
     $oldSessionId = session()->id();
 
-    $response = $controller->store($request);
+    $response = $controller->store($request, new LoginAction());
 
     $newSessionId = session()->id();
 
@@ -69,7 +70,7 @@ it('fails to log-in a user when password is invalid', function () {
 
     $oldSessionId = session()->id();
 
-    $response = $controller->store($request);
+    $response = $controller->store($request, new LoginAction());
 
     $newSessionId = session()->id();
 

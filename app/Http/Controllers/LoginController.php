@@ -4,15 +4,16 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Actions\Auth\LoginAction;
+use App\Actions\Auth\LogoutAction;
 use App\Http\Requests\LoginRequest;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Auth;
 
 final class LoginController extends Controller
 {
-    public function store(LoginRequest $request): RedirectResponse
+    public function store(LoginRequest $request, LoginAction $action): RedirectResponse
     {
-        $succeeded = Auth::attempt($request->validated());
+        $succeeded = $action->execute($request->toDto());
 
         if (! $succeeded) {
             return to_route('login')->withErrors([
@@ -20,8 +21,13 @@ final class LoginController extends Controller
             ]);
         }
 
-        $request->session()->regenerate();
-
         return to_route('dashboard');
+    }
+
+    public function destroy(LogoutAction $action): RedirectResponse
+    {
+        $action->execute();
+
+        return to_route('login');
     }
 }
