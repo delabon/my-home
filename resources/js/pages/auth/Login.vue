@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Head, Form } from '@inertiajs/vue3';
 import Input from "@/components/ui/Input.vue";
+import Button from "@/components/ui/Button.vue";
 
 </script>
 
@@ -35,9 +36,10 @@ import Input from "@/components/ui/Input.vue";
                 :error="errors.password"
             />
 
-            <button class="cursor-pointer" type="submit">
-                {{ processing ? "Signing-in..." : "Sign-In" }}
-            </button>
+            <Button
+                :label="processing ? 'Signing-in...' : 'Sign-In'"
+                type="submit"
+            />
         </Form>
     </div>
 </template>
