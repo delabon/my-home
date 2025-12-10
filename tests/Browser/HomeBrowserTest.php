@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use App\Enums\PostStatus;
-use Database\Factories\PostFactory;
+use Tests\NewPost;
 
 test('page passes smoke test (no JS errors and console logs)', function () {
     visit('/')->assertNoSmoke();
@@ -20,7 +20,7 @@ it('shows no posts yet message when there are no posts', function () {
 
     $page->assertSee('No posts yet!');
 
-    PostFactory::times(3)->create([
+    new NewPost([
         'status' => PostStatus::Draft->value,
     ]);
 
@@ -31,9 +31,9 @@ it('shows no posts yet message when there are no posts', function () {
 
 it('displays the published blog posts', function () {
     $postCount = 3;
-    $posts = PostFactory::times($postCount)->create([
-        'status' => PostStatus::Published,
-    ]);
+    $posts = new NewPost([
+        'status' => PostStatus::Published->value,
+    ], $postCount)->posts;
 
     $page = visit(route('home'));
 
@@ -48,9 +48,9 @@ it('displays the published blog posts', function () {
 
 it('paginates the published blog posts', function () {
     $postCount = 11;
-    $posts = PostFactory::times($postCount)->create([
-        'status' => PostStatus::Published,
-    ]);
+    $posts = new NewPost([
+        'status' => PostStatus::Published->value,
+    ], $postCount)->posts;
 
     $page = visit(route('home'));
 
