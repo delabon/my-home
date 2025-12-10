@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Actions\Auth\LogoutAction;
 use App\Http\Requests\LoginRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -26,11 +27,9 @@ final class LoginController extends Controller
         return to_route('dashboard');
     }
 
-    public function destroy(Request $request): RedirectResponse
+    public function destroy(LogoutAction $action): RedirectResponse
     {
-        auth()->logout();
-
-        $request->session()->regenerate();
+        $action->execute();
 
         return to_route('login');
     }
