@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 use App\Models\Post;
 use Database\Factories\PostFactory;
-use Database\Factories\UserFactory;
+use Tests\NewUser;
 
 test('to array', function () {
-    $user = UserFactory::new()->create();
+    $user = new NewUser()->user;
 
     expect($user->toArray())->toHaveKeys([
         'id',
@@ -20,7 +20,7 @@ test('to array', function () {
 });
 
 it('has many posts', function () {
-    $user = UserFactory::new()->create();
+    $user = new NewUser()->user;
     $posts = PostFactory::times(3)->create([
         'user_id' => $user->id,
     ]);

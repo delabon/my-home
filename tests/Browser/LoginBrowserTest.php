@@ -2,20 +2,17 @@
 
 declare(strict_types=1);
 
-use Database\Factories\UserFactory;
+use Tests\NewUser;
 
 it('signs-in a user successfully', function () {
-    $password = '12341234';
-    $user =  UserFactory::new()->create([
-        'password' => $password,
-    ]);
+    $user = new NewUser()->user;
 
     $this->assertGuest();
 
     $page = visit(route('login'));
 
     $page->fill('[name="email"]', $user->email)
-        ->fill('[name="password"]', $password)
+        ->fill('[name="password"]', NewUser::VALID_PASSWORD)
         ->click('Sign-In');
 
     $this->assertAuthenticated();
@@ -26,7 +23,7 @@ it('fails when trying to sign-in a user with invalid email', function () {
     $page = visit(route('login'));
 
     $page->fill('[name="email"]', 'invalid-email@test.com')
-        ->fill('[name="password"]', '12341234')
+        ->fill('[name="password"]', NewUser::VALID_PASSWORD)
         ->click('Sign-In')
         ->assertSee('Failed to login, please check your email and/or password.');
 
@@ -34,15 +31,12 @@ it('fails when trying to sign-in a user with invalid email', function () {
 });
 
 it('fails when trying to sign-in a user with invalid password', function () {
-    $password = '12341234';
-    $user =  UserFactory::new()->create([
-        'password' => $password,
-    ]);
+    $user =  new NewUser()->user;
 
     $page = visit(route('login'));
 
     $page->fill('[name="email"]', $user->email)
-        ->fill('[name="password"]', 'kfcswerfd')
+        ->fill('[name="password"]', NewUser::INVALID_PASSWORD)
         ->click('Sign-In')
         ->assertSee('Failed to login, please check your email and/or password.');
 

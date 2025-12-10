@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use Database\Factories\UserFactory;
 use Inertia\Testing\AssertableInertia;
+use Tests\NewUser;
 
 it('renders the login page', function () {
     $response = $this->get(route('login'));
@@ -15,17 +15,13 @@ it('renders the login page', function () {
 });
 
 it('signs in successfully', function () {
-    $password = '12345678';
-    $user = UserFactory::new()->create([
-        'email' => 'john@doe.com',
-        'password' => $password
-    ]);
+    $user = new NewUser()->user;
 
     $oldSessionId = session()->id();
 
     $response = $this->post(route('login.store'), [
         'email' => $user->email,
-        'password' => $password
+        'password' => NewUser::VALID_PASSWORD
     ]);
 
     $newSessionId = session()->id();
@@ -37,15 +33,13 @@ it('signs in successfully', function () {
 });
 
 it('signs in a different user successfully', function () {
-    $password = 'kwer1234';
-    $user = UserFactory::new()->create([
+    $user = new NewUser([
         'email' => 'mike@jordon.com',
-        'password' => $password
-    ]);
+    ])->user;
 
     $response = $this->post(route('login.store'), [
         'email' => $user->email,
-        'password' => $password
+        'password' => NewUser::VALID_PASSWORD,
     ]);
 
     $response->assertRedirect(route('dashboard'));
@@ -54,30 +48,26 @@ it('signs in a different user successfully', function () {
 });
 
 test('trying to sign-in while already signed-in returns a redirect response to dashboard page', function () {
-    $password = 'kwer1234';
-    $user = UserFactory::new()->create([
+    $user = new NewUser([
         'email' => 'mike@jordon.com',
-        'password' => $password
-    ]);
+    ])->user;
 
     $response = $this->post(route('login.store'), [
         'email' => $user->email,
-        'password' => $password
+        'password' => NewUser::VALID_PASSWORD,
     ]);
 
     $response->assertRedirect(route('dashboard'));
     $this->assertAuthenticated();
     expect(auth()->user()->id)->toBe($user->id);
 
-    $anotherPassword = '87651234';
-    $anotherUser = UserFactory::new()->create([
+    $anotherUser = new NewUser([
         'email' => 'lina@doe.com',
-        'password' => $password
-    ]);
+    ])->user;
 
     $newResponse = $this->post(route('login.store'), [
         'email' => $anotherUser->email,
-        'password' => $anotherPassword
+        'password' => NewUser::VALID_PASSWORD
     ]);
 
     $newResponse->assertRedirectToRoute('dashboard');
@@ -105,15 +95,11 @@ dataset('invalid_email_data', [
 ]);
 
 it('fails with invalid email addresses', function (string $invalidEmail, string $expectedMessage) {
-    $password = '12345678';
-    UserFactory::new()->create([
-        'email' => 'john.doe@test.com',
-        'password' => $password
-    ]);
+    new NewUser();
 
     $response = $this->post(route('login.store'), [
         'email' => $invalidEmail,
-        'password' => $password
+        'password' => NewUser::VALID_PASSWORD,
     ]);
 
     $response->assertRedirectBack();
@@ -139,14 +125,10 @@ dataset('invalid_password_data', [
 ]);
 
 it('fails with invalid passwords', function (mixed $invalidPassword, string $expectedMessage) {
-    $email = 'john.doe@test.com';
-    UserFactory::new()->create([
-        'email' => $email,
-        'password' => '12341234',
-    ]);
+    $user = new NewUser()->user;
 
     $response = $this->post(route('login.store'), [
-        'email' => $email,
+        'email' => $user->email,
         'password' => $invalidPassword
     ]);
 
@@ -158,15 +140,11 @@ it('fails with invalid passwords', function (mixed $invalidPassword, string $exp
 })->with('invalid_password_data');
 
 test('trying to sign-in with a bad password', function () {
-    $password = 'kwer1234';
-    $user = UserFactory::new()->create([
-        'email' => 'mike@jordon.com',
-        'password' => $password
-    ]);
+    $user = new NewUser()->user;
 
     $response = $this->post(route('login.store'), [
         'email' => $user->email,
-        'password' => 'bad-password'
+        'password' => NewUser::INVALID_PASSWORD
     ]);
 
     $response->assertRedirect(route('login'));
@@ -176,16 +154,12 @@ test('trying to sign-in with a bad password', function () {
     ]);
 });
 
-test('trying to sign-in with a bad email', function () {
-    $password = 'kwer1234';
-    UserFactory::new()->create([
-        'email' => 'mike@jordon.com',
-        'password' => $password
-    ]);
+test('trying to sign-in with a non existent email', function () {
+    new NewUser();
 
     $response = $this->post(route('login.store'), [
-        'email' => 'bad.email@test.cc',
-        'password' => $password,
+        'email' => NewUser::NON_EXISTENT_EMAIL,
+        'password' => NewUser::VALID_PASSWORD,
     ]);
 
     $response->assertRedirect(route('login'));
@@ -198,8 +172,8 @@ test('trying to sign-in with a bad email', function () {
 it('returns too many requests response when trying to brute force the login end point', function () {
     for ($i = 0; $i < 5; $i++) {
         $response = $this->post(route('login.store'), [
-            'email' => 'bad.email@test.cc',
-            'password' => '12341234',
+            'email' => NewUser::NON_EXISTENT_EMAIL,
+            'password' => NewUser::VALID_PASSWORD,
         ]);
 
         $response->assertRedirect(route('login'));
@@ -207,8 +181,8 @@ it('returns too many requests response when trying to brute force the login end 
     }
 
     $response = $this->post(route('login.store'), [
-        'email' => 'bad.email@test.cc',
-        'password' => '12341234',
+        'email' => NewUser::NON_EXISTENT_EMAIL,
+        'password' => NewUser::VALID_PASSWORD,
     ]);
 
     $response->assertTooManyRequests();

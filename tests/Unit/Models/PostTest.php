@@ -5,7 +5,7 @@ declare(strict_types=1);
 use App\Enums\PostStatus;
 use App\Models\User;
 use Database\Factories\PostFactory;
-use Database\Factories\UserFactory;
+use Tests\NewUser;
 
 test('to array', function () {
     $post = PostFactory::new()->create();
@@ -28,7 +28,7 @@ it('casts status into PostStatus enum', function () {
 });
 
 it('belongs to a user', function () {
-    $user = UserFactory::new()->create();
+    $user = new NewUser()->user;
     $post = PostFactory::new()->create([
         'user_id' => $user->id,
     ]);
