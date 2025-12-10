@@ -27,6 +27,7 @@ import { login } from "@/routes";
                 placeholder="john@example.com"
                 name="email"
                 :error="errors.email"
+                autocomplete="email"
             />
 
             <Input

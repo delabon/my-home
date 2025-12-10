@@ -17,6 +17,10 @@ defineProps({
         type: String,
         required: false,
     },
+    autocomplete: {
+        type: String,
+        required: false,
+    },
     error: {
         type: String,
         required: false,
@@ -27,7 +31,7 @@ defineProps({
 <template>
     <label class="flex flex-col gap-2">
         <strong v-if="label">{{ label }}</strong>
-        <input :type="type" :placeholder="placeholder" :name="name">
+        <input :type="type" :placeholder="placeholder" :name="name" :autocomplete="autocomplete">
         <span v-if="error" class="text-red-500 block w-full">
             {{ error }}
         </span>
