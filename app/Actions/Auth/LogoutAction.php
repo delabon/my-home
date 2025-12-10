@@ -13,6 +13,6 @@ final class LogoutAction
     {
         Auth::logout();
         Session::invalidate();
-        Session::regenerate();
+        Session::regenerateToken();
     }
 }

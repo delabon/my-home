@@ -15,7 +15,7 @@ it('logs out a user and regenerate the session', function () {
         ->once()
         ->andReturnNull();
 
-    Session::shouldReceive('regenerate')
+    Session::shouldReceive('regenerateToken')
         ->once()
         ->andReturnNull();
 
