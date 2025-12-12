@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Actions\PaginatePostsAction;
+use App\Actions\Posts\PaginatePostsAction;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;

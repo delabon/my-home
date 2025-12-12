@@ -44,10 +44,12 @@ final class CreatePostRequest extends FormRequest
 
     public function toDto(): NewPostDTO
     {
+        $data = $this->validated();
+
         return new NewPostDTO(
-            title: $this->title,
-            body: $this->body,
-            status: $this->status,
+            title: $data['title'],
+            body: $data['body'],
+            status: PostStatus::from($data['status']),
         );
     }
 }

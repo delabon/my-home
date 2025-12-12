@@ -46,4 +46,12 @@ trait WithUser
 
         return $this;
     }
+
+    public static function validaLoginData(): array
+    {
+        return [
+            'email' => self::VALID_EMAIL,
+            'password' => self::VALID_PASSWORD,
+        ];
+    }
 }

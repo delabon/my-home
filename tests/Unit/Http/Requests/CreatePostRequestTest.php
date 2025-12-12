@@ -6,6 +6,7 @@ use App\DTOs\NewPostDTO;
 use App\Enums\PostStatus;
 use App\Http\Requests\CreatePostRequest;
 use Illuminate\Validation\Rule;
+use Tests\NewPost;
 
 it('authorizes the request', function () {
     $request = new CreatePostRequest();
@@ -37,15 +38,20 @@ it('returns the correct rules', function () {
 });
 
 test('toDto returns a new instance of NewPostDTO', function () {
+    $data = NewPost::validPostData();
     $request = CreatePostRequest::create(
         '/',
         'POST',
-        [
-            'title' => 'My title 2',
-            'body' => 'My body 2',
-            'status' => 'published',
-        ]
+        $data
     );
 
-    expect($request->toDto())->toBeInstanceOf(NewPostDTO::class);
+    $validator = validator($data, $request->rules());
+    $request->setValidator($validator);
+
+    $dto = $request->toDto();
+
+    expect($dto)->toBeInstanceOf(NewPostDTO::class)
+        ->and($dto->title)->toBe($data['title'])
+        ->and($dto->body)->toBe($data['body'])
+        ->and($dto->status)->toBe(PostStatus::from($data['status']));
 });
