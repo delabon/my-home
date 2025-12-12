@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Actions\PaginatePostsAction;
+use App\Actions\Posts\PaginatePostsAction;
 use App\Enums\PostStatus;
 use Illuminate\Pagination\Paginator;
 use Tests\NewPost;
