@@ -13,7 +13,10 @@ defineProps({
 </script>
 
 <template>
-    <button class="cursor-pointer" :type="type">
+    <button
+        :type="type"
+        class="text-black bg-gray-400 p-3 rounded cursor-pointer"
+    >
         {{ label }}
     </button>
 </template>
