@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\DTOs\NewPostDTO;
 use App\Enums\PostStatus;
 use App\Http\Requests\CreatePostRequest;
 use Illuminate\Validation\Rule;
@@ -33,4 +34,18 @@ it('returns the correct rules', function () {
             Rule::enum(PostStatus::class),
         ]
     ]);
+});
+
+test('toDto returns a new instance of NewPostDTO', function () {
+    $request = CreatePostRequest::create(
+        '/',
+        'POST',
+        [
+            'title' => 'My title 2',
+            'body' => 'My body 2',
+            'status' => 'published',
+        ]
+    );
+
+    expect($request->toDto())->toBeInstanceOf(NewPostDTO::class);
 });

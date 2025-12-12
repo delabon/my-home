@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Requests;
 
+use App\DTOs\NewPostDTO;
 use App\Enums\PostStatus;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -39,5 +40,14 @@ final class CreatePostRequest extends FormRequest
                 Rule::enum(PostStatus::class),
             ]
         ];
+    }
+
+    public function toDto(): NewPostDTO
+    {
+        return new NewPostDTO(
+            title: $this->title,
+            body: $this->body,
+            status: $this->status,
+        );
     }
 }

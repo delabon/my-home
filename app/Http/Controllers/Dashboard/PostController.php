@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Actions\Posts\CreatePostAction;
 use App\Enums\PostStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreatePostRequest;
@@ -24,11 +25,9 @@ final class PostController extends Controller
         ]);
     }
 
-    public function store(CreatePostRequest $request)
+    public function store(CreatePostRequest $request, CreatePostAction $action)
     {
-        $request->user()
-            ->posts()
-            ->create($request->all());
+        $action->execute($request->user(), $request->toDto());
 
         return to_route('posts.index')
             ->with('success', 'Post has been created.');
