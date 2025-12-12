@@ -47,7 +47,7 @@ final class CreatePostRequest extends FormRequest
         return new NewPostDTO(
             title: $this->title,
             body: $this->body,
-            status: $this->status,
+            status: PostStatus::from($this->status),
         );
     }
 }
