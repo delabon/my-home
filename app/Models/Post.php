@@ -11,6 +11,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 final class Post extends Model
 {
+    protected $fillable = [
+        'title',
+        'body',
+        'status',
+    ];
+
     protected $casts = [
         'status' => PostStatus::class,
     ];

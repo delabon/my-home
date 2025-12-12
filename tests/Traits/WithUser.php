@@ -6,6 +6,8 @@ namespace Tests\Traits;
 
 use App\Models\User;
 use Database\Factories\UserFactory;
+use RuntimeException;
+use Tests\TestCase;
 
 trait WithUser
 {
@@ -32,5 +34,16 @@ trait WithUser
         $attribute['email'] = $attribute['email'] ?? self::VALID_EMAIL;
 
         return UserFactory::new()->create($attribute);
+    }
+
+    public function login(TestCase $testCase): self
+    {
+        if (! $this->user) {
+            throw new RuntimeException('You need to create a new user first.');
+        }
+
+        $testCase->actingAs($this->user);
+
+        return $this;
     }
 }
