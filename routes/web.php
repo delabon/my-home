@@ -33,7 +33,7 @@ Route::prefix('dashboard')
             Route::get('/', [PostController::class, 'index'])
                 ->name('.index');
             Route::post('/', [PostController::class, 'store'])
-                ->middleware(['throttle: 10,1']) // 10 attempts per minute
+                ->middleware(['throttle:10,1']) // 10 attempts per minute
                 ->name('.store');
             Route::get('create', [PostController::class, 'create'])
                 ->name('.create');
