@@ -15,7 +15,8 @@ it('renders the create post page successfully', function () {
 
     $response->assertOk()
         ->assertInertia(function (AssertableInertia $component) {
-            $component->component('dashboard/posts/Create');
+            $component->component('dashboard/posts/Create')
+                ->has('statuses');
         });
 });
 
