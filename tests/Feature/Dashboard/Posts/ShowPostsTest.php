@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use App\Enums\PostStatus;
-use App\Models\Post;
 use Inertia\Testing\AssertableInertia;
 use Tests\NewPost;
 use Tests\NewUser;
@@ -25,9 +24,10 @@ it('renders the posts page successfully', function () {
         ->assertInertia(static fn (AssertableInertia $page) =>
             $page->component('dashboard/posts/Index')
                 ->has('posts')
-                ->where('posts.0.id', $posts[0]->id)
-                ->where('posts.1.id', $posts[1]->id)
-                ->where('posts.2.id', $posts[2]->id)
+                ->has('posts.data')
+                ->where('posts.data.0.id', $posts[0]->id)
+                ->where('posts.data.1.id', $posts[1]->id)
+                ->where('posts.data.2.id', $posts[2]->id)
         );
 });
 
@@ -47,8 +47,9 @@ it('only fetches the published posts', function () {
         ->assertInertia(static fn (AssertableInertia $page) =>
         $page->component('dashboard/posts/Index')
             ->has('posts')
-            ->count('posts', 1)
-            ->where('posts.0.id', $posts[0]->id)
+            ->has('posts.data')
+            ->count('posts.data', 1)
+            ->where('posts.data.0.id', $posts[0]->id)
         );
 });
 

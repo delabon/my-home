@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Dashboard;
 
 use App\Actions\Posts\CreatePostAction;
+use App\Actions\Posts\PaginatePostsAction;
 use App\Enums\PostStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreatePostRequest;
@@ -16,12 +17,10 @@ use Inertia\Response;
 
 final class PostController extends Controller
 {
-    public function index(): Response
+    public function index(PaginatePostsAction $action): Response
     {
         return Inertia::render('dashboard/posts/Index', [
-            'posts' => Post::query()
-                ->published()
-                ->get(),
+            'posts' => $action->execute(),
         ]);
     }
 

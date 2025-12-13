@@ -18,7 +18,7 @@ defineProps({
         <h1>All Posts</h1>
 
         <ul>
-            <li v-for="post in posts" :key="post.id">
+            <li v-for="post in posts.data" :key="post.id">
                 <h3 v-text="post.title"></h3>
             </li>
         </ul>
