@@ -28,13 +28,14 @@ it('updates a post successfully', function () {
     $user = new NewUser()->login($this)->user;
     $postData = NewPost::validPostData();
     $postData['user_id'] = $user->id;
+    $postData['status'] = PostStatus::Draft->value;
     $post = new NewPost($postData)->first();
     $oldCreatedAtTimestamp = $post->created_at->timestamp;
     $oldUpdatedAtTimestamp = $post->updated_at->timestamp;
     $updatedPostData = [
         'title' => 'The post title is updated',
         'body' => 'The post body is updated',
-        'status' => PostStatus::Draft->value,
+        'status' => PostStatus::Published->value,
     ];
 
     $page = visit(route('posts.edit', $post));
@@ -58,5 +59,5 @@ it('updates a post successfully', function () {
         ->and($post->body)->toBe($updatedPostData['body'])
         ->and($post->status)->toBe(PostStatus::Published)
         ->and($post->created_at->timestamp)->toBe($oldCreatedAtTimestamp)
-        ->and($post->updated_at->timestamp)->toBeLessThanOrEqual($oldUpdatedAtTimestamp);
+        ->and($post->updated_at->timestamp)->toBeGreaterThanOrEqual($oldUpdatedAtTimestamp);
 });
