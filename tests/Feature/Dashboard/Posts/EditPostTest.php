@@ -58,7 +58,7 @@ it('updates a post successfully', function () {
         'status' => PostStatus::Draft->value,
     ]);
 
-    $response->assertRedirectToRoute('posts.edit', $post)
+    $response->assertRedirectToRoute('posts.index')
         ->assertSessionHas('success', 'Post has been updated.');
 
     $post->refresh();
@@ -93,7 +93,7 @@ it('returns a too many requests response when trying to update a post too many t
             'status' => PostStatus::Draft->value,
         ]);
 
-        $response->assertRedirectToRoute('posts.edit', $post)
+        $response->assertRedirectToRoute('posts.index')
             ->assertSessionHas('success', 'Post has been updated.');
     }
 

@@ -32,7 +32,7 @@ const status = ref(props.post.status || 'draft');
 
             <Form
                 :action="posts.update(post.id).url"
-                method="post"
+                method="patch"
                 #default="{
                     errors,
                     processing,

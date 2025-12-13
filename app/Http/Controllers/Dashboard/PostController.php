@@ -48,7 +48,7 @@ final class PostController extends Controller
     {
         $post->update($request->validated());
 
-        return to_route('posts.edit', $post)
+        return to_route('posts.index')
             ->with('success',  'Post has been updated.');
     }
 }
