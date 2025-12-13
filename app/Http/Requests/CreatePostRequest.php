@@ -6,6 +6,7 @@ namespace App\Http\Requests;
 
 use App\DTOs\NewPostDTO;
 use App\Enums\PostStatus;
+use App\Models\Post;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -14,7 +15,7 @@ final class CreatePostRequest extends FormRequest
     public function authorize(): bool
     {
         // For now, we don't have locked or banned users
-        return true;
+        return $this->user()?->can('create', Post::class) ?? false;
     }
 
     /**
