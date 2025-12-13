@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Enums\PostStatus;
+use App\Models\Post;
 use Inertia\Testing\AssertableInertia;
 use Tests\NewPost;
 use Tests\NewUser;
@@ -61,7 +62,8 @@ it('updates a post successfully', function () {
 
     $post->refresh();
 
-    expect($post->user_id)->toBe($user->id)
+    expect(Post::count())->toBeOne()
+        ->and($post->user_id)->toBe($user->id)
         ->and($post->title)->toBe('This title has been editing')
         ->and($post->body)->toBe('This body has been editing')
         ->and($post->status)->toBe(PostStatus::Draft);
