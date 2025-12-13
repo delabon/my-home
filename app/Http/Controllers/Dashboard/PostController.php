@@ -18,7 +18,11 @@ final class PostController extends Controller
 {
     public function index(): Response
     {
-        return Inertia::render('dashboard/posts/Index');
+        return Inertia::render('dashboard/posts/Index', [
+            'posts' => Post::query()
+                ->published()
+                ->get(),
+        ]);
     }
 
     public function create(): Response
