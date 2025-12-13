@@ -12,7 +12,7 @@ final class EditPostRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return $this->user()?->can('update', $this->route('post'));
+        return $this->user()?->can('update', $this->route('post')) ?? false;
     }
 
     /**
