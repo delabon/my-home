@@ -37,5 +37,10 @@ Route::prefix('dashboard')
                 ->name('.store');
             Route::get('create', [PostController::class, 'create'])
                 ->name('.create');
+            Route::get('{post}/edit', [PostController::class, 'edit'])
+                ->name('.edit');
+            Route::patch('{post}', [PostController::class, 'update'])
+                ->middleware(['throttle:10,1']) // 10 attempts per minute
+                ->name('.update');
         });
     });

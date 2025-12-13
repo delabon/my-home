@@ -1,4 +1,6 @@
 <script setup lang="ts">
+const model = defineModel<string>({ required: false });
+
 defineProps({
     label: {
         type: String,
@@ -28,6 +30,7 @@ defineProps({
         <strong v-if="label">{{ label }}</strong>
         <select
             :name="name"
+            v-model="model"
             class="block w-full px-3 py-2.5 bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand shadow-xs placeholder:text-body"
         >
             <option v-if="placeholder" value="" disabled selected>{{ placeholder }}</option>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Input from "@/components/ui/Input.vue";
+const model = defineModel<string>({ required: false });
 
 defineProps({
     label: {
@@ -32,6 +32,7 @@ defineProps({
             :name="name"
             :placeholder="placeholder"
             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+            v-model="model"
         ></textarea>
         <span v-if="error" class="text-red-500 block w-full">
             {{ error }}
