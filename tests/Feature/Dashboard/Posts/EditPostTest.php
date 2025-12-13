@@ -50,6 +50,7 @@ it('updates a post successfully', function () {
         'body' => NewPost::VALID_BODY,
         'status' => NewPost::VALID_STATUS,
     ])->first();
+    $oldUpdatedAtTimestamp = $post->updated_at->timestamp;
 
     $response = $this->patch(route('posts.update', $post), [
         'title' => 'This title has been editing',
@@ -66,7 +67,8 @@ it('updates a post successfully', function () {
         ->and($post->user_id)->toBe($user->id)
         ->and($post->title)->toBe('This title has been editing')
         ->and($post->body)->toBe('This body has been editing')
-        ->and($post->status)->toBe(PostStatus::Draft);
+        ->and($post->status)->toBe(PostStatus::Draft)
+        ->and($post->updated_at->timestamp)->toBeGreaterThanOrEqual($oldUpdatedAtTimestamp);
 });
 
 it('redirects guests to login page when trying to access the update post endpoint', function () {
