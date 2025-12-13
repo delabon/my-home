@@ -8,6 +8,7 @@ use App\Actions\Posts\CreatePostAction;
 use App\Enums\PostStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreatePostRequest;
+use App\Http\Requests\EditPostRequest;
 use App\Models\Post;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
@@ -43,7 +44,11 @@ final class PostController extends Controller
         ]);
     }
 
-    public function update(): void
+    public function update(Post $post, EditPostRequest $request): RedirectResponse
     {
+        $post->update($request->validated());
+
+        return to_route('posts.edit', $post)
+            ->with('success',  'Post has been updated.');
     }
 }
