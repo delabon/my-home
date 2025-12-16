@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Dashboard;
 
 use App\Actions\Posts\CreatePostAction;
+use App\Actions\Posts\EditPostAction;
 use App\Actions\Posts\PaginatePostsAction;
 use App\Enums\PostStatus;
 use App\Http\Controllers\Controller;
@@ -47,9 +48,9 @@ final class PostController extends Controller
         ]);
     }
 
-    public function update(Post $post, EditPostRequest $request): RedirectResponse
+    public function update(Post $post, EditPostRequest $request, EditPostAction $action): RedirectResponse
     {
-        $post->update($request->validated());
+        $action->execute($post, $request->toDto());
 
         return to_route('posts.index')
             ->with('success',  'Post has been updated.');
