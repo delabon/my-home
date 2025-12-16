@@ -35,7 +35,7 @@ it('returns the correct rules', function () {
         'status' => [
             'required',
             Rule::enum(PostStatus::class),
-        ]
+        ],
     ]);
 });
 

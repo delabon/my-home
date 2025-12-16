@@ -31,7 +31,7 @@ it('fails when trying to sign-in a user with invalid email', function () {
 });
 
 it('fails when trying to sign-in a user with invalid password', function () {
-    $user =  new NewUser()->user;
+    $user = new NewUser()->user;
 
     $page = visit(route('login'));
 

@@ -9,14 +9,6 @@ enum PostStatus: string
     case Published = 'published';
     case Draft = 'draft';
 
-    public function label(): string
-    {
-        return match ($this) {
-            self::Published => 'Published',
-            self::Draft => 'Draft',
-        };
-    }
-
     /**
      * @return array<int, string[]>
      */
@@ -25,8 +17,16 @@ enum PostStatus: string
         return collect(self::cases())
             ->map(static fn (self $case) => [
                 'value' => $case->value,
-                'label' => $case->label()
+                'label' => $case->label(),
             ])
             ->all();
+    }
+
+    public function label(): string
+    {
+        return match ($this) {
+            self::Published => 'Published',
+            self::Draft => 'Draft',
+        };
     }
 }

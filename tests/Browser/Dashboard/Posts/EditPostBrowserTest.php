@@ -16,8 +16,8 @@ it('renders the edit post page successfully', function () {
     $page = visit(route('posts.edit', $post));
 
     $page
-        ->assertTitle('Edit Post - ' . config('app.name'))
-        ->assertSee('Edit post: ' . $post->title)
+        ->assertTitle('Edit Post - '.config('app.name'))
+        ->assertSee('Edit post: '.$post->title)
         ->assertValue('title', $post->title)
         ->assertValue('[name="body"]', $post->body)
         ->assertSelected('status', $post->status->value)

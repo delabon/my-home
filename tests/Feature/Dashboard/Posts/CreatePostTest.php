@@ -38,18 +38,18 @@ it('redirects guests to login page when trying to access the store post endpoint
 it('returns too many requests response when trying to abuse the store post endpoint', function () {
     new NewUser()->login($this);
 
-    for ($i = 0; $i < 10; $i++) {
+    for ($i = 0; $i < 10; ++$i) {
         $response = $this->post(route('posts.store'), [
-            'title' => 'Post number ' . $i,
-            'body' => 'Super long Body number ' . $i,
+            'title' => 'Post number '.$i,
+            'body' => 'Super long Body number '.$i,
             'status' => PostStatus::Published->value,
         ]);
         $response->assertRedirect(route('posts.index'));
     }
 
     $response = $this->post(route('posts.store'), [
-        'title' => 'Post number ' . 11,
-        'body' => 'Body number ' . 11,
+        'title' => 'Post number '. 11,
+        'body' => 'Body number '. 11,
         'status' => PostStatus::Published->value,
     ]);
     $response->assertTooManyRequests();
@@ -84,15 +84,15 @@ it('create a post successfully', function () {
 dataset('invalid_title_data', [
     [
         '',
-        'The title field is required.'
+        'The title field is required.',
     ],
     [
         'U',
-        'The title field must be at least 2 characters.'
+        'The title field must be at least 2 characters.',
     ],
     [
         str_repeat('a', 256),
-        'The title field must not be greater than 255 characters.'
+        'The title field must not be greater than 255 characters.',
     ],
 ]);
 
@@ -115,15 +115,15 @@ it('fails with invalid titles', function (string $invalidTitle, string $expected
 dataset('invalid_body_data', [
     [
         '',
-        'The body field is required.'
+        'The body field is required.',
     ],
     [
         'ABCD',
-        'The body field must be at least 20 characters.'
+        'The body field must be at least 20 characters.',
     ],
     [
         str_repeat('a', 5001),
-        'The body field must not be greater than 5000 characters.'
+        'The body field must not be greater than 5000 characters.',
     ],
 ]);
 
@@ -146,11 +146,11 @@ it('fails with invalid body', function (string $invalidBody, string $expectedMes
 dataset('invalid_status_data', [
     [
         '',
-        'The status field is required.'
+        'The status field is required.',
     ],
     [
         'ABCD',
-        'The selected status is invalid.'
+        'The selected status is invalid.',
     ],
 ]);
 
@@ -169,5 +169,3 @@ it('fails with invalid status data', function (string $invalidStatus, string $ex
             'status' => $expectedMessage,
         ]);
 })->with('invalid_status_data');
-
-

@@ -48,7 +48,7 @@ final class HandleInertiaRequests extends Middleware
                 'error' => static fn () => $request->session()->get('error'),
                 'info' => static fn () => $request->session()->get('info'),
                 'warning' => static fn () => $request->session()->get('warning'),
-            ]
+            ],
         ];
     }
 }

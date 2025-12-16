@@ -22,7 +22,8 @@ it('authorizes the request', function () {
     $request->setUserResolver(static fn () => $user);
 
     $request->setRouteResolver(function () use ($post) {
-        return new class($post) {
+        return new class($post)
+        {
             public function __construct(private $post) {}
 
             public function parameter($key, $default = null)
@@ -46,7 +47,8 @@ it('does authorize the request when non-owner', function () {
     $request->setUserResolver(static fn () => $user);
 
     $request->setRouteResolver(function () use ($post) {
-        return new class($post) {
+        return new class($post)
+        {
             public function __construct(private $post) {}
 
             public function parameter($key, $default = null)
@@ -78,7 +80,7 @@ it('returns the correct rules', function () {
         'status' => [
             'required',
             Rule::enum(PostStatus::class),
-        ]
+        ],
     ]);
 });
 

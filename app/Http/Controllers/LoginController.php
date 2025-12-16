@@ -17,7 +17,7 @@ final class LoginController extends Controller
 
         if (! $succeeded) {
             return to_route('login')->withErrors([
-                'email' => 'Failed to login, please check your email and/or password.'
+                'email' => 'Failed to login, please check your email and/or password.',
             ]);
         }
 

@@ -11,8 +11,6 @@ use Tests\TestCase;
 
 trait WithUser
 {
-    public User $user;
-
     public const string VALID_PASSWORD = '12345432';
 
     public const string INVALID_PASSWORD = 'wrong-password';
@@ -20,6 +18,16 @@ trait WithUser
     public const string NON_EXISTENT_EMAIL = 'non-existent@test.cc';
 
     public const string VALID_EMAIL = 'john@doe.cc';
+
+    public User $user;
+
+    public static function validaLoginData(): array
+    {
+        return [
+            'email' => self::VALID_EMAIL,
+            'password' => self::VALID_PASSWORD,
+        ];
+    }
 
     public function withUser(array $attribute = []): User
     {
@@ -45,13 +53,5 @@ trait WithUser
         $testCase->actingAs($this->user);
 
         return $this;
-    }
-
-    public static function validaLoginData(): array
-    {
-        return [
-            'email' => self::VALID_EMAIL,
-            'password' => self::VALID_PASSWORD,
-        ];
     }
 }

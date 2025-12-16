@@ -6,8 +6,8 @@ namespace App\Http\Requests\Shared;
 
 use App\DTOs\NewPostDTO;
 use App\Enums\PostStatus;
-use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 abstract class BasePostRequest extends FormRequest
 {
@@ -16,7 +16,7 @@ abstract class BasePostRequest extends FormRequest
     /**
      * @return array<string, array<mixed>>
      */
-    public function rules(): array
+    final public function rules(): array
     {
         return [
             'title' => [
@@ -34,11 +34,11 @@ abstract class BasePostRequest extends FormRequest
             'status' => [
                 'required',
                 Rule::enum(PostStatus::class),
-            ]
+            ],
         ];
     }
 
-    public function toDto(): NewPostDTO
+    final public function toDto(): NewPostDTO
     {
         /** @var array<string, string> $data */
         $data = $this->validated();

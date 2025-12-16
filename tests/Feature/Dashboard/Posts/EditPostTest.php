@@ -11,7 +11,6 @@ use Tests\NewUser;
 /**
  * Edit post page
  */
-
 it('renders the edit post page successfully', function () {
     $user = new NewUser()->login($this)->user;
     $post = new NewPost([
@@ -21,14 +20,13 @@ it('renders the edit post page successfully', function () {
     $response = $this->get(route('posts.edit', $post));
 
     $response->assertOk()
-        ->assertInertia(static fn (AssertableInertia $page) =>
-            $page->component('dashboard/posts/Edit')
-                ->has('statuses')
-                ->has('post')
-                ->where('post.id', $post->id)
-                ->where('post.title', $post->title)
-                ->where('post.body', $post->body)
-                ->where('post.status', $post->status->value)
+        ->assertInertia(static fn (AssertableInertia $page) => $page->component('dashboard/posts/Edit')
+            ->has('statuses')
+            ->has('post')
+            ->where('post.id', $post->id)
+            ->where('post.title', $post->title)
+            ->where('post.body', $post->body)
+            ->where('post.status', $post->status->value)
         );
 });
 
@@ -41,7 +39,6 @@ it('redirects guests to login page when trying to access the edit post page', fu
 /**
  * update post endpoint
  */
-
 it('updates a post successfully', function () {
     $user = new NewUser()->login($this)->user;
     $post = new NewPost([
@@ -86,7 +83,7 @@ it('returns a too many requests response when trying to update a post too many t
         'status' => NewPost::VALID_STATUS,
     ])->first();
 
-    for ($i = 0; $i < 10; $i++) {
+    for ($i = 0; $i < 10; ++$i) {
         $response = $this->patch(route('posts.update', $post), [
             'title' => 'This title has been editing',
             'body' => 'This body has been editing',
@@ -109,7 +106,7 @@ it('returns a too many requests response when trying to update a post too many t
 it('returns forbidden response when trying to update a post with a non-owner user', function () {
     $user = new NewUser()->login($this)->user;
     $post = new NewPost([
-        'status' => NewPost::VALID_STATUS
+        'status' => NewPost::VALID_STATUS,
     ])->first();
 
     $response = $this->patch(route('posts.update', $post), [
@@ -131,15 +128,15 @@ it('returns forbidden response when trying to update a post with a non-owner use
 dataset('invalid_title_data', [
     [
         '',
-        'The title field is required.'
+        'The title field is required.',
     ],
     [
         'U',
-        'The title field must be at least 2 characters.'
+        'The title field must be at least 2 characters.',
     ],
     [
         str_repeat('a', 256),
-        'The title field must not be greater than 255 characters.'
+        'The title field must not be greater than 255 characters.',
     ],
 ]);
 
@@ -166,15 +163,15 @@ it('fails with invalid titles', function (string $invalidTitle, string $expected
 dataset('invalid_body_data', [
     [
         '',
-        'The body field is required.'
+        'The body field is required.',
     ],
     [
         'ABCD',
-        'The body field must be at least 20 characters.'
+        'The body field must be at least 20 characters.',
     ],
     [
         str_repeat('a', 5001),
-        'The body field must not be greater than 5000 characters.'
+        'The body field must not be greater than 5000 characters.',
     ],
 ]);
 
@@ -201,11 +198,11 @@ it('fails with invalid body', function (string $invalidBody, string $expectedMes
 dataset('invalid_status_data', [
     [
         '',
-        'The status field is required.'
+        'The status field is required.',
     ],
     [
         'ABCD',
-        'The selected status is invalid.'
+        'The selected status is invalid.',
     ],
 ]);
 
