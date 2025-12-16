@@ -22,3 +22,11 @@ it('authorizes editing a post', function () {
 
     expect($policy->update($user, $post))->toBeTrue();
 });
+
+it('does not authorize editing a post for a non-owner', function () {
+    $policy = new PostPolicy();
+    $nonOwner = new NewUser()->user;
+    $post = new NewPost()->first();
+
+    expect($policy->update($nonOwner, $post))->toBeFalse();
+});
