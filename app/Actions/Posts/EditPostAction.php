@@ -9,8 +9,10 @@ use App\Models\Post;
 
 final class EditPostAction
 {
-    public function execute(Post $post, NewPostDTO $dto): void
+    public function execute(Post $post, NewPostDTO $dto): Post
     {
         $post->update($dto->toArray());
+
+        return $post;
     }
 }

@@ -28,9 +28,7 @@ it('updates a post successfully', function () {
     );
     $action = new EditPostAction();
 
-    $action->execute($post, $dto);
-
-    $updatedPost = $user->posts()->first();
+    $updatedPost = $action->execute($post, $dto);
 
     expect($user->posts->count())->toBeOne()
         ->and($post->id)->toBe($updatedPost->id)
