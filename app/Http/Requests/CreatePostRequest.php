@@ -4,53 +4,14 @@ declare(strict_types=1);
 
 namespace App\Http\Requests;
 
-use App\DTOs\NewPostDTO;
-use App\Enums\PostStatus;
+use App\Http\Requests\Shared\BasePostRequest;
 use App\Models\Post;
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
-final class CreatePostRequest extends FormRequest
+final class CreatePostRequest extends BasePostRequest
 {
     public function authorize(): bool
     {
         // For now, we don't have locked or banned users
         return $this->user()?->can('create', Post::class) ?? false;
-    }
-
-    /**
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
-    public function rules(): array
-    {
-        return [
-            'title' => [
-                'required',
-                'string',
-                'min:2',
-                'max:255',
-            ],
-            'body' => [
-                'required',
-                'string',
-                'min:20',
-                'max:5000',
-            ],
-            'status' => [
-                'required',
-                Rule::enum(PostStatus::class),
-            ]
-        ];
-    }
-
-    public function toDto(): NewPostDTO
-    {
-        $data = $this->validated();
-
-        return new NewPostDTO(
-            title: $data['title'],
-            body: $data['body'],
-            status: PostStatus::from($data['status']),
-        );
     }
 }
