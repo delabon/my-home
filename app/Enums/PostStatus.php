@@ -17,6 +17,9 @@ enum PostStatus: string
         };
     }
 
+    /**
+     * @return array<int, string[]>
+     */
     public static function options(): array
     {
         return collect(self::cases())

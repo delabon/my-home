@@ -12,6 +12,9 @@ final class CreatePostAction
 {
     public function execute(User $user, NewPostDTO $dto): Post
     {
-        return $user->posts()->create($dto->toArray());
+        /** @var Post $post */
+        $post = $user->posts()->create($dto->toArray());
+
+        return $post;
     }
 }

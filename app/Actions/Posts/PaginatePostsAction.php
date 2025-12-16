@@ -9,6 +9,9 @@ use Illuminate\Contracts\Pagination\Paginator;
 
 final class PaginatePostsAction
 {
+    /**
+     * @return Paginator<int, Post>
+     */
     public function execute(int $perPage = 10): Paginator
     {
         return Post::query()

@@ -14,7 +14,7 @@ abstract class BasePostRequest extends FormRequest
     abstract public function authorize(): bool;
 
     /**
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, array<mixed>>
      */
     public function rules(): array
     {
@@ -40,6 +40,7 @@ abstract class BasePostRequest extends FormRequest
 
     public function toDto(): NewPostDTO
     {
+        /** @var array<string, string> $data */
         $data = $this->validated();
 
         return new NewPostDTO(

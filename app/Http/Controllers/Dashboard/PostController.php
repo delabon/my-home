@@ -34,6 +34,7 @@ final class PostController extends Controller
 
     public function store(CreatePostRequest $request, CreatePostAction $action): RedirectResponse
     {
+        /** @phpstan-ignore argument.type */
         $action->execute($request->user(), $request->toDto());
 
         return to_route('posts.index')
