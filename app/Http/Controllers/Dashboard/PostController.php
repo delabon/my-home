@@ -53,6 +53,6 @@ final class PostController extends Controller
         $action->execute($post, $request->toDto());
 
         return to_route('posts.index')
-            ->with('success',  'Post has been updated.');
+            ->with('success', 'Post has been updated.');
     }
 }
