@@ -15,7 +15,7 @@ final class LoginRequest extends FormRequest
     }
 
     /**
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, string[]>
      */
     public function rules(): array
     {
@@ -34,6 +34,7 @@ final class LoginRequest extends FormRequest
 
     public function toDto(): LoginDTO
     {
+        /** @var array<string, string> $data */
         $data = $this->validated();
 
         return new LoginDTO(

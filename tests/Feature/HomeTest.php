@@ -10,6 +10,6 @@ it('renders the home page component successfully', function () {
     $response
         ->assertOk()
         ->assertInertia(function (AssertableInertia $component) {
-        $component->component('Home');
-    });
+            $component->component('Home');
+        });
 });

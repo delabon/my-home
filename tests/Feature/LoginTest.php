@@ -21,7 +21,7 @@ it('signs in successfully', function () {
 
     $response = $this->post(route('login.store'), [
         'email' => $user->email,
-        'password' => NewUser::VALID_PASSWORD
+        'password' => NewUser::VALID_PASSWORD,
     ]);
 
     $newSessionId = session()->id();
@@ -67,7 +67,7 @@ test('trying to sign-in while already signed-in returns a redirect response to d
 
     $newResponse = $this->post(route('login.store'), [
         'email' => $anotherUser->email,
-        'password' => NewUser::VALID_PASSWORD
+        'password' => NewUser::VALID_PASSWORD,
     ]);
 
     $newResponse->assertRedirectToRoute('dashboard');
@@ -78,19 +78,19 @@ test('trying to sign-in while already signed-in returns a redirect response to d
 dataset('invalid_email_data', [
     [
         '',
-        'The email field is required.'
+        'The email field is required.',
     ],
     [
         'john.doe',
-        'The email field must be a valid email address.'
+        'The email field must be a valid email address.',
     ],
     [
         '@',
-        'The email field must be a valid email address.'
+        'The email field must be a valid email address.',
     ],
     [
         '@test.com',
-        'The email field must be a valid email address.'
+        'The email field must be a valid email address.',
     ],
 ]);
 
@@ -112,15 +112,15 @@ it('fails with invalid email addresses', function (string $invalidEmail, string 
 dataset('invalid_password_data', [
     [
         '',
-        'The password field is required.'
+        'The password field is required.',
     ],
     [
         true,
-        'The password field must be at least 8 characters.'
+        'The password field must be at least 8 characters.',
     ],
     [
         '123',
-        'The password field must be at least 8 characters.'
+        'The password field must be at least 8 characters.',
     ],
 ]);
 
@@ -129,7 +129,7 @@ it('fails with invalid passwords', function (mixed $invalidPassword, string $exp
 
     $response = $this->post(route('login.store'), [
         'email' => $user->email,
-        'password' => $invalidPassword
+        'password' => $invalidPassword,
     ]);
 
     $response->assertRedirectBack();
@@ -144,7 +144,7 @@ test('trying to sign-in with a bad password', function () {
 
     $response = $this->post(route('login.store'), [
         'email' => $user->email,
-        'password' => NewUser::INVALID_PASSWORD
+        'password' => NewUser::INVALID_PASSWORD,
     ]);
 
     $response->assertRedirect(route('login'));
@@ -170,7 +170,7 @@ test('trying to sign-in with a non existent email', function () {
 });
 
 it('returns too many requests response when trying to brute force the login end point', function () {
-    for ($i = 0; $i < 5; $i++) {
+    for ($i = 0; $i < 5; ++$i) {
         $response = $this->post(route('login.store'), [
             'email' => NewUser::NON_EXISTENT_EMAIL,
             'password' => NewUser::VALID_PASSWORD,

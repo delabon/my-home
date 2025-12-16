@@ -14,7 +14,7 @@ it('creates a new post successfully', function () {
     $page = visit(route('posts.create'));
 
     $page
-        ->assertTitle('Create a New Post - ' . config('app.name'))
+        ->assertTitle('Create a New Post - '.config('app.name'))
         ->assertSee('Create a new post')
         ->fill('[name="title"]', $postData['title'])
         ->fill('[name="body"]', $postData['body'])
@@ -22,6 +22,7 @@ it('creates a new post successfully', function () {
         ->click('Create')
         ->wait(3)
         ->assertRoute('posts.index')
+        ->assertSee($postData['title'])
         ->assertSee('Post has been created.');
 
     $posts = Post::all();

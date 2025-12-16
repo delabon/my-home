@@ -7,9 +7,11 @@ use App\Enums\PostStatus;
 use App\Http\Requests\CreatePostRequest;
 use Illuminate\Validation\Rule;
 use Tests\NewPost;
+use Tests\NewUser;
 
 it('authorizes the request', function () {
     $request = new CreatePostRequest();
+    $request->setUserResolver(static fn () => new NewUser()->user);
 
     expect($request->authorize())->toBeTrue();
 });
@@ -33,7 +35,7 @@ it('returns the correct rules', function () {
         'status' => [
             'required',
             Rule::enum(PostStatus::class),
-        ]
+        ],
     ]);
 });
 

@@ -41,8 +41,8 @@ it('displays the published blog posts', function () {
         $page->assertSee($posts[$i]->title);
     }
 
-    $page->assertSourceMissing('<a href="'.route('home',['page' => 1,]).'">Prev</a>')
-        ->assertSourceMissing('<a href="'.route('home',['page' => 2,]).'">Next</a>');
+    $page->assertSourceMissing('<a href="'.route('home', ['page' => 1]).'">Prev</a>')
+        ->assertSourceMissing('<a href="'.route('home', ['page' => 2]).'">Next</a>');
 
 });
 

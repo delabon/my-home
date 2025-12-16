@@ -13,10 +13,10 @@ it('returns options for the Select component', function () {
         [
             'value' => 'published',
             'label' => 'Published',
-       ],
+        ],
         [
             'value' => 'draft',
             'label' => 'Draft',
-      ]
+        ],
     ]);
 });

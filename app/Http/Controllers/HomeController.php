@@ -18,7 +18,7 @@ final class HomeController extends Controller
         $posts = $action->execute(perPage: self::PER_PAGE);
 
         return Inertia::render('Home', [
-            'posts' => $posts
+            'posts' => $posts,
         ]);
     }
 }

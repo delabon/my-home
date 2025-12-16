@@ -19,6 +19,15 @@ trait WithPost
 
     public Collection $posts;
 
+    public static function validPostData(): array
+    {
+        return [
+            'title' => self::VALID_TITLE,
+            'body' => self::VALID_BODY,
+            'status' => self::VALID_STATUS,
+        ];
+    }
+
     public function first(): ?Post
     {
         return $this->posts[0] ?? null;
@@ -42,21 +51,12 @@ trait WithPost
     {
         if ($times === 1) {
             $this->posts = new Collection([
-                PostFactory::new()->create($attribute)
+                PostFactory::new()->create($attribute),
             ]);
         } elseif ($times > 1) {
             $this->posts = PostFactory::times($times)->create($attribute);
         }
 
         return $this->posts;
-    }
-
-    public static function validPostData(): array
-    {
-        return [
-            'title' => self::VALID_TITLE,
-            'body' => self::VALID_BODY,
-            'status' => self::VALID_STATUS,
-        ];
     }
 }

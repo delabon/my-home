@@ -30,6 +30,9 @@ final class Post extends Model
         'status' => PostStatus::class,
     ];
 
+    /**
+     * @return BelongsTo<User, $this>
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

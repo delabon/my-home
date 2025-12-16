@@ -28,7 +28,7 @@ it('redirects to login page when trying to log out when already logged out', fun
 it('returns too many requests response when trying to log out more than the rate limit', function () {
     $user = new NewUser()->user;
 
-    for ($i = 0; $i < 5; $i++) {
+    for ($i = 0; $i < 5; ++$i) {
         $this->actingAs($user);
         $response = $this->post(route('logout'));
         $response->assertRedirect(route('login'));

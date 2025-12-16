@@ -7,6 +7,9 @@ namespace App\DTOs;
 use App\Enums\PostStatus;
 use Illuminate\Contracts\Support\Arrayable;
 
+/**
+ * @implements Arrayable<string, mixed>
+ */
 final readonly class NewPostDTO implements Arrayable
 {
     public function __construct(
@@ -15,6 +18,9 @@ final readonly class NewPostDTO implements Arrayable
         public PostStatus $status,
     ) {}
 
+    /**
+     * @return array<string, mixed>
+     */
     public function toArray(): array
     {
         return [

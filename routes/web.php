@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Http\Controllers\Dashboard\PostController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
@@ -37,5 +39,10 @@ Route::prefix('dashboard')
                 ->name('.store');
             Route::get('create', [PostController::class, 'create'])
                 ->name('.create');
+            Route::get('{post}/edit', [PostController::class, 'edit'])
+                ->name('.edit');
+            Route::patch('{post}', [PostController::class, 'update'])
+                ->middleware(['throttle:10,1']) // 10 attempts per minute
+                ->name('.update');
         });
     });
