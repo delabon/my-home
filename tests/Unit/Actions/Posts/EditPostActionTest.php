@@ -9,6 +9,7 @@ use Tests\NewPost;
 use Tests\NewUser;
 
 use function Pest\Laravel\assertDatabaseCount;
+use function Pest\Laravel\assertDatabaseHas;
 
 it('updates a post successfully', function () {
     $user = new NewUser()->user;
@@ -37,4 +38,9 @@ it('updates a post successfully', function () {
         ->and($updatedPost->status)->toBe($updatedPostData['status']);
 
     assertDatabaseCount('posts', 1);
+    assertDatabaseHas('posts', [
+        'title' => $updatedPostData['title'],
+        'body' => $updatedPostData['body'],
+        'status' => $updatedPostData['status']->value,
+    ]);
 });
