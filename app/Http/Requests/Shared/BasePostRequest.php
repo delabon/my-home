@@ -6,6 +6,7 @@ namespace App\Http\Requests\Shared;
 
 use App\DTOs\NewPostDTO;
 use App\Enums\PostStatus;
+use App\Models\Post;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
@@ -31,7 +32,9 @@ abstract class BasePostRequest extends FormRequest
                 'string',
                 'max:255',
                 'regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/',
-                Rule::unique('posts', 'slug')->ignore($this->route('post')?->id),
+                Rule::unique('posts', 'slug')->ignore(
+                    $this->route('post') instanceof Post ? $this->route('post')->id : null
+                ),
             ],
             'body' => [
                 'required',
@@ -46,13 +49,6 @@ abstract class BasePostRequest extends FormRequest
         ];
     }
 
-    protected function prepareForValidation(): void
-    {
-        $this->merge([
-            'slug' => Str::slug($this->slug ?? $this->title ?? ''),
-        ]);
-    }
-
     final public function toDto(): NewPostDTO
     {
         /** @var array<string, string> $data */
@@ -64,5 +60,14 @@ abstract class BasePostRequest extends FormRequest
             body: $data['body'],
             status: PostStatus::from($data['status']),
         );
+    }
+
+    protected function prepareForValidation(): void
+    {
+        $slug = $this->input('slug') ?? $this->input('title') ?? '';
+
+        $this->merge([
+            'slug' => Str::slug(is_string($slug) ? $slug : ''),
+        ]);
     }
 }

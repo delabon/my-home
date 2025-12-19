@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 use App\Enums\PostStatus;
 use App\Models\Post;
+use Illuminate\Support\Str;
 use Inertia\Testing\AssertableInertia;
 use Tests\NewPost;
 use Tests\NewUser;
-use Illuminate\Support\Str;
 
 /**
  * Edit post page
@@ -198,7 +198,7 @@ it('fails with invalid slugs', function (string $invalidSlug, string $expectedMe
 it('fails with non unique slug', function () {
     $user = new NewUser()->login($this)->user;
     $slug = 'my-unique-slug';
-     new NewPost([
+    new NewPost([
         'user_id' => $user->id,
         'slug' => $slug,
     ])->first();

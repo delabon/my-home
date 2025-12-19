@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 use App\Enums\PostStatus;
 use App\Models\Post;
+use Illuminate\Support\Str;
 use Inertia\Testing\AssertableInertia;
 use Tests\NewPost;
 use Tests\NewUser;
-use Illuminate\Support\Str;
 
 it('renders the create post page successfully', function () {
     new NewUser()->login($this);
