@@ -22,6 +22,7 @@ final class PostFactory extends Factory
         return [
             'user_id' => UserFactory::new(),
             'title' => fake()->sentence(),
+            'slug' => fake()->unique()->slug(),
             'body' => fake()->paragraphs(asText: true),
             'status' => PostStatus::Draft,
         ];

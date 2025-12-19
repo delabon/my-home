@@ -71,6 +71,13 @@ it('returns the correct rules', function () {
             'min:2',
             'max:255',
         ],
+        'slug' => [
+            'nullable',
+            'string',
+            'max:255',
+            'regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/',
+            Rule::unique('posts', 'slug')->ignore(null),
+        ],
         'body' => [
             'required',
             'string',
@@ -99,6 +106,7 @@ test('toDto returns a new instance of NewPostDTO', function () {
 
     expect($dto)->toBeInstanceOf(NewPostDTO::class)
         ->and($dto->title)->toBe($data['title'])
+        ->and($dto->slug)->toBe($data['slug'])
         ->and($dto->body)->toBe($data['body'])
         ->and($dto->status)->toBe(PostStatus::from($data['status']));
 });

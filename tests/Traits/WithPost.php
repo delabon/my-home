@@ -13,6 +13,8 @@ trait WithPost
 {
     public const string VALID_TITLE = 'This is a valid post title';
 
+    public const string VALID_SLUG = 'my-post';
+
     public const string VALID_BODY = 'This is a valid post body it should be more than 20 chars';
 
     public const string VALID_STATUS = PostStatus::Published->value;
@@ -23,6 +25,7 @@ trait WithPost
     {
         return [
             'title' => self::VALID_TITLE,
+            'slug' => self::VALID_SLUG,
             'body' => self::VALID_BODY,
             'status' => self::VALID_STATUS,
         ];

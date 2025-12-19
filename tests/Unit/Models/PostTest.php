@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Enums\PostStatus;
 use App\Models\User;
+use Illuminate\Database\UniqueConstraintViolationException;
 use Tests\NewPost;
 use Tests\NewUser;
 
@@ -16,6 +17,7 @@ test('to array', function () {
         'id',
         'user_id',
         'title',
+        'slug',
         'body',
         'status',
         'created_at',
@@ -39,4 +41,15 @@ it('belongs to a user', function () {
 
     expect($post->user)->toBeInstanceOf(User::class)
         ->and($post->user->id)->toBe($user->id);
+});
+
+test('status should be unique', function () {
+    expect(static function () {
+        $post1 = new NewPost([
+            'slug' => 'my-post',
+        ])->first();
+        $post2 = new NewPost([
+            'slug' => 'my-post',
+        ])->first();
+    })->toThrow(UniqueConstraintViolationException::class);
 });

@@ -75,7 +75,20 @@ test('trying to sign-in while already signed-in returns a redirect response to d
     expect(auth()->user()->id)->toBe($user->id);
 });
 
-dataset('invalid_email_data', [
+it('fails with invalid email addresses', function (string $invalidEmail, string $expectedMessage) {
+    new NewUser();
+
+    $response = $this->post(route('login.store'), [
+        'email' => $invalidEmail,
+        'password' => NewUser::VALID_PASSWORD,
+    ]);
+
+    $response->assertRedirectBack();
+    $response->assertSessionHasErrors([
+        'email' => $expectedMessage,
+    ]);
+    $this->assertGuest();
+})->with([
     [
         '',
         'The email field is required.',
@@ -94,36 +107,6 @@ dataset('invalid_email_data', [
     ],
 ]);
 
-it('fails with invalid email addresses', function (string $invalidEmail, string $expectedMessage) {
-    new NewUser();
-
-    $response = $this->post(route('login.store'), [
-        'email' => $invalidEmail,
-        'password' => NewUser::VALID_PASSWORD,
-    ]);
-
-    $response->assertRedirectBack();
-    $response->assertSessionHasErrors([
-        'email' => $expectedMessage,
-    ]);
-    $this->assertGuest();
-})->with('invalid_email_data');
-
-dataset('invalid_password_data', [
-    [
-        '',
-        'The password field is required.',
-    ],
-    [
-        true,
-        'The password field must be at least 8 characters.',
-    ],
-    [
-        '123',
-        'The password field must be at least 8 characters.',
-    ],
-]);
-
 it('fails with invalid passwords', function (mixed $invalidPassword, string $expectedMessage) {
     $user = new NewUser()->user;
 
@@ -137,7 +120,20 @@ it('fails with invalid passwords', function (mixed $invalidPassword, string $exp
         'password' => $expectedMessage,
     ]);
     $this->assertGuest();
-})->with('invalid_password_data');
+})->with([
+    [
+        '',
+        'The password field is required.',
+    ],
+    [
+        true,
+        'The password field must be at least 8 characters.',
+    ],
+    [
+        '123',
+        'The password field must be at least 8 characters.',
+    ],
+]);
 
 test('trying to sign-in with a bad password', function () {
     $user = new NewUser()->user;

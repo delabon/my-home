@@ -22,6 +22,7 @@ final class Post extends Model
 {
     protected $fillable = [
         'title',
+        'slug',
         'body',
         'status',
     ];
