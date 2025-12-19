@@ -33,7 +33,9 @@ abstract class BasePostRequest extends FormRequest
                 'max:255',
                 'regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/',
                 Rule::unique('posts', 'slug')->ignore(
-                    $this->route('post') instanceof Post ? $this->route('post')->id : null
+                    $this->route('post') instanceof Post
+                        ? $this->route('post')->id
+                        : null
                 ),
             ],
             'body' => [
