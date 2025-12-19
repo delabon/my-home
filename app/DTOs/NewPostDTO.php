@@ -14,6 +14,7 @@ final readonly class NewPostDTO implements Arrayable
 {
     public function __construct(
         public string $title,
+        public string $slug,
         public string $body,
         public PostStatus $status,
     ) {}
@@ -25,6 +26,7 @@ final readonly class NewPostDTO implements Arrayable
     {
         return [
             'title' => $this->title,
+            'slug' => $this->slug,
             'body' => $this->body,
             'status' => $this->status,
         ];

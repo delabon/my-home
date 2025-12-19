@@ -39,6 +39,14 @@ defineProps({
                     autocomplete="title"
                 />
 
+                <Input
+                    label="Slug"
+                    type="text"
+                    name="slug"
+                    :error="errors.slug"
+                    autocomplete="slug"
+                />
+
                 <Textarea
                     label="Body"
                     name="body"

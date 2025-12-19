@@ -9,6 +9,7 @@ use Tests\NewPost;
 use Tests\NewUser;
 
 use function Pest\Laravel\assertDatabaseCount;
+use function Pest\Laravel\assertDatabaseHas;
 
 it('updates a post successfully', function () {
     $user = new NewUser()->user;
@@ -18,13 +19,15 @@ it('updates a post successfully', function () {
     ])->first();
     $updatedPostData = [
         'title' => 'This title has been updated',
-        'body' => 'This title has been updated',
+        'slug' => 'updated-slug',
+        'body' => 'This body has been updated',
         'status' => PostStatus::Published,
     ];
     $dto = new NewPostDTO(
         title: $updatedPostData['title'],
+        slug: $updatedPostData['slug'],
         body: $updatedPostData['body'],
-        status: $updatedPostData['status'],
+        status: $updatedPostData['status']
     );
     $action = new EditPostAction();
 
@@ -37,4 +40,10 @@ it('updates a post successfully', function () {
         ->and($updatedPost->status)->toBe($updatedPostData['status']);
 
     assertDatabaseCount('posts', 1);
+    assertDatabaseHas('posts', [
+        'title' => $updatedPostData['title'],
+        'slug' => $updatedPostData['slug'],
+        'body' => $updatedPostData['body'],
+        'status' => $updatedPostData['status']->value,
+    ]);
 });

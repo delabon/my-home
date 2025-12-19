@@ -16,6 +16,7 @@ it('creates a new post successfully', function () {
     $status = PostStatus::from($postData['status']);
     $dto = new NewPostDTO(
         title: $postData['title'],
+        slug: $postData['slug'],
         body: $postData['body'],
         status: $status,
     );

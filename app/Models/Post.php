@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 /**
  * @property-read int $id
  * @property-read string $title
+ * @property-read string $slug
  * @property-read string $body
  * @property-read PostStatus $status
  * @property-read CarbonInterface $created_at
@@ -22,6 +23,7 @@ final class Post extends Model
 {
     protected $fillable = [
         'title',
+        'slug',
         'body',
         'status',
     ];

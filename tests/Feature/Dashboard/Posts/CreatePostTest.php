@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Enums\PostStatus;
 use App\Models\Post;
+use Illuminate\Support\Str;
 use Inertia\Testing\AssertableInertia;
 use Tests\NewPost;
 use Tests\NewUser;
@@ -41,6 +42,7 @@ it('returns too many requests response when trying to abuse the store post endpo
     for ($i = 0; $i < 10; ++$i) {
         $response = $this->post(route('posts.store'), [
             'title' => 'Post number '.$i,
+            'slug' => 'post-'.$i,
             'body' => 'Super long Body number '.$i,
             'status' => PostStatus::Published->value,
         ]);
@@ -49,13 +51,14 @@ it('returns too many requests response when trying to abuse the store post endpo
 
     $response = $this->post(route('posts.store'), [
         'title' => 'Post number '. 11,
+        'slug' => 'post-11',
         'body' => 'Body number '. 11,
         'status' => PostStatus::Published->value,
     ]);
     $response->assertTooManyRequests();
 });
 
-it('create a post successfully', function () {
+it('creates a post successfully', function () {
     $user = new NewUser()->login($this)->user;
     $postData = NewPost::validPostData();
 
@@ -75,26 +78,32 @@ it('create a post successfully', function () {
         ->and($firstPost)->toBeInstanceOf(Post::class)
         ->and($firstPost->user_id)->toBe($user->id)
         ->and($firstPost->title)->toBe($postData['title'])
+        ->and($firstPost->slug)->toBe($postData['slug'])
         ->and($firstPost->body)->toBe($postData['body'])
         ->and($firstPost->status)->toBe(PostStatus::Published)
         ->and($firstPost->created_at->timestamp)->toBeLessThanOrEqual($nowTimestamp)
         ->and($firstPost->updated_at->timestamp)->toBeLessThanOrEqual($nowTimestamp);
 });
 
-dataset('invalid_title_data', [
-    [
-        '',
-        'The title field is required.',
-    ],
-    [
-        'U',
-        'The title field must be at least 2 characters.',
-    ],
-    [
-        str_repeat('a', 256),
-        'The title field must not be greater than 255 characters.',
-    ],
-]);
+it('creates a post with a slug generated from the title successfully', function () {
+    new NewUser()->login($this)->user;
+    $postData = NewPost::validPostData();
+    unset($postData['slug']);
+
+    $response = $this->post(
+        route('posts.store'),
+        $postData
+    );
+
+    $response->assertRedirect(route('posts.index'))
+        ->assertSessionHas('success', 'Post has been created.');
+
+    $posts = Post::all();
+    $firstPost = $posts->first();
+
+    expect($posts->count())->toBe(1)
+        ->and($firstPost->slug)->toBe(Str::slug($postData['title']));
+});
 
 it('fails with invalid titles', function (string $invalidTitle, string $expectedMessage) {
     new NewUser()->login($this)->user;
@@ -112,20 +121,38 @@ it('fails with invalid titles', function (string $invalidTitle, string $expected
         ]);
 })->with('invalid_title_data');
 
-dataset('invalid_body_data', [
-    [
-        '',
-        'The body field is required.',
-    ],
-    [
-        'ABCD',
-        'The body field must be at least 20 characters.',
-    ],
-    [
-        str_repeat('a', 5001),
-        'The body field must not be greater than 5000 characters.',
-    ],
-]);
+it('fails with invalid slugs', function (string $invalidSlug, string $expectedMessage) {
+    new NewUser()->login($this)->user;
+    $postData = NewPost::validPostData();
+    $postData['slug'] = $invalidSlug;
+
+    $response = $this->post(
+        route('posts.store'),
+        $postData
+    );
+
+    $response->assertRedirectBack()
+        ->assertSessionHasErrors([
+            'slug' => $expectedMessage,
+        ]);
+})->with('invalid_slug_data');
+
+it('fails with non unique slug', function () {
+    new NewUser()->login($this)->user;
+    $post = new NewPost()->first();
+    $postData = NewPost::validPostData();
+    $postData['slug'] = $post->slug;
+
+    $response = $this->post(
+        route('posts.store'),
+        $postData
+    );
+
+    $response->assertRedirectBack()
+        ->assertSessionHasErrors([
+            'slug' => 'The slug has already been taken.',
+        ]);
+});
 
 it('fails with invalid body', function (string $invalidBody, string $expectedMessage) {
     new NewUser()->login($this)->user;
@@ -142,17 +169,6 @@ it('fails with invalid body', function (string $invalidBody, string $expectedMes
             'body' => $expectedMessage,
         ]);
 })->with('invalid_body_data');
-
-dataset('invalid_status_data', [
-    [
-        '',
-        'The status field is required.',
-    ],
-    [
-        'ABCD',
-        'The selected status is invalid.',
-    ],
-]);
 
 it('fails with invalid status data', function (string $invalidStatus, string $expectedMessage) {
     new NewUser()->login($this)->user;
