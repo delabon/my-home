@@ -119,20 +119,7 @@ it('fails with invalid titles', function (string $invalidTitle, string $expected
         ->assertSessionHasErrors([
             'title' => $expectedMessage,
         ]);
-})->with([
-    [
-        '',
-        'The title field is required.',
-    ],
-    [
-        'U',
-        'The title field must be at least 2 characters.',
-    ],
-    [
-        str_repeat('a', 256),
-        'The title field must not be greater than 255 characters.',
-    ],
-]);
+})->with('invalid_title_data');
 
 it('fails with invalid slugs', function (string $invalidSlug, string $expectedMessage) {
     new NewUser()->login($this)->user;
@@ -148,12 +135,7 @@ it('fails with invalid slugs', function (string $invalidSlug, string $expectedMe
         ->assertSessionHasErrors([
             'slug' => $expectedMessage,
         ]);
-})->with([
-    [
-        str_repeat('a', 256),
-        'The slug field must not be greater than 255 characters.',
-    ],
-]);
+})->with('invalid_slug_data');
 
 it('fails with non unique slug', function () {
     new NewUser()->login($this)->user;
@@ -186,20 +168,7 @@ it('fails with invalid body', function (string $invalidBody, string $expectedMes
         ->assertSessionHasErrors([
             'body' => $expectedMessage,
         ]);
-})->with([
-    [
-        '',
-        'The body field is required.',
-    ],
-    [
-        'ABCD',
-        'The body field must be at least 20 characters.',
-    ],
-    [
-        str_repeat('a', 5001),
-        'The body field must not be greater than 5000 characters.',
-    ],
-]);
+})->with('invalid_body_data');
 
 it('fails with invalid status data', function (string $invalidStatus, string $expectedMessage) {
     new NewUser()->login($this)->user;
@@ -215,13 +184,4 @@ it('fails with invalid status data', function (string $invalidStatus, string $ex
         ->assertSessionHasErrors([
             'status' => $expectedMessage,
         ]);
-})->with([
-    [
-        '',
-        'The status field is required.',
-    ],
-    [
-        'ABCD',
-        'The selected status is invalid.',
-    ],
-]);
+})->with('invalid_status_data');
