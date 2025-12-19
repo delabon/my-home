@@ -19,6 +19,7 @@ const props = defineProps({
 });
 
 const title = ref(props.post.title || '');
+const slug = ref(props.post.slug || '');
 const body = ref(props.post.body || '');
 const status = ref(props.post.status || 'draft');
 </script>
@@ -47,6 +48,15 @@ const status = ref(props.post.status || 'draft');
                     v-model="title"
                     :error="errors.title"
                     autocomplete="title"
+                />
+
+                <Input
+                    label="Slug"
+                    type="text"
+                    name="slug"
+                    v-model="slug"
+                    :error="errors.slug"
+                    autocomplete="slug"
                 />
 
                 <Textarea

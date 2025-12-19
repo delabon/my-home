@@ -19,6 +19,7 @@ it('renders the edit post page successfully', function () {
         ->assertTitle('Edit Post - '.config('app.name'))
         ->assertSee('Edit post: '.$post->title)
         ->assertValue('title', $post->title)
+        ->assertValue('slug', $post->slug)
         ->assertValue('[name="body"]', $post->body)
         ->assertSelected('status', $post->status->value)
         ->assertSee('Save');
@@ -34,6 +35,7 @@ it('updates a post successfully', function () {
     $oldUpdatedAtTimestamp = $post->updated_at->timestamp;
     $updatedPostData = [
         'title' => 'The post title is updated',
+        'slug' => 'post-slug-is-updated',
         'body' => 'The post body is updated',
         'status' => PostStatus::Published->value,
     ];
@@ -42,6 +44,7 @@ it('updates a post successfully', function () {
 
     $page
         ->fill('[name="title"]', $updatedPostData['title'])
+        ->fill('[name="slug"]', $updatedPostData['slug'])
         ->fill('[name="body"]', $updatedPostData['body'])
         ->select('[name="status"]', $updatedPostData['status'])
         ->click('Save')
@@ -56,6 +59,7 @@ it('updates a post successfully', function () {
     expect(Post::count())->toBeOne()
         ->and($post->user_id)->toBe($user->id)
         ->and($post->title)->toBe($updatedPostData['title'])
+        ->and($post->slug)->toBe($updatedPostData['slug'])
         ->and($post->body)->toBe($updatedPostData['body'])
         ->and($post->status)->toBe(PostStatus::Published)
         ->and($post->created_at->timestamp)->toBe($oldCreatedAtTimestamp)

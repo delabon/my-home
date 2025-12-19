@@ -72,7 +72,7 @@ it('returns the correct rules', function () {
             'max:255',
         ],
         'slug' => [
-            'nullable',
+            'required',
             'string',
             'max:255',
             'regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/',
