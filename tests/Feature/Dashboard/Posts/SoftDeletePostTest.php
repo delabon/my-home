@@ -85,6 +85,23 @@ it('returns a too many requests response when trying to delete posts too many ti
 
 });
 
+it('returns a not found response when trying to delete an already deleted post', function () {
+    $user = new NewUser()->login($this)->user;
+    $post = new NewPost([
+        'user_id' => $user->id,
+        'status' => PostStatus::Published->value,
+    ])->first();
+    $post->delete();
+
+    $response = $this->delete(route('posts.delete', $post));
+
+    $response->assertNotFound();
+
+    $post->refresh();
+
+    expect($post->trashed())->toBeTrue();
+});
+
 it('redirects to the login page when trying to delete a post when not logged in', function () {
     $post = new NewPost([
         'status' => PostStatus::Published->value,
