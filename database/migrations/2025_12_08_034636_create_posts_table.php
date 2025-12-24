@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('slug')->unique();
             $table->text('body');
             $table->string('status', 50)->index();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

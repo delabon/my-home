@@ -29,7 +29,23 @@ const status = ref(props.post.status || 'draft');
 
     <div class="flex justify-center">
         <div class="container">
-            <h1 class="text-2xl">Edit post: {{ post.title }}</h1>
+            <div class="flex items-center justify-between gap-3 flex-wrap">
+                <h1 class="text-2xl">Edit post: {{ post.title }}</h1>
+
+                <Form
+                    :action="posts.delete(post.id).url"
+                    method="delete"
+                    #default="{
+                        processing,
+                    }"
+                    class="flex flex-col gap-4 mt-6"
+                >
+                    <Button
+                        :label="processing ? 'Deleting...' : 'Delete Post'"
+                        type="submit"
+                    />
+                </Form>
+            </div>
 
             <Form
                 :action="posts.update(post.id).url"

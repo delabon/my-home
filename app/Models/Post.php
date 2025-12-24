@@ -9,6 +9,7 @@ use Carbon\CarbonInterface;
 use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @property-read int $id
@@ -21,6 +22,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 final class Post extends Model
 {
+    use SoftDeletes;
+
     protected $fillable = [
         'title',
         'slug',
