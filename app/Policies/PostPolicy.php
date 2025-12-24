@@ -14,11 +14,6 @@ final class PostPolicy
         return true;
     }
 
-    private function manage(User $user, Post $post): bool
-    {
-        return $user->id === $post->user_id;
-    }
-
     public function update(User $user, Post $post): bool
     {
         return $this->manage($user, $post);
@@ -32,5 +27,10 @@ final class PostPolicy
     public function softDelete(User $user, Post $post): bool
     {
         return $this->manage($user, $post);
+    }
+
+    private function manage(User $user, Post $post): bool
+    {
+        return $user->id === $post->user_id;
     }
 }
