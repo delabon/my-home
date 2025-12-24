@@ -7,6 +7,7 @@ namespace App\Http\Controllers\Dashboard;
 use App\Actions\Posts\CreatePostAction;
 use App\Actions\Posts\EditPostAction;
 use App\Actions\Posts\PaginatePostsAction;
+use App\Actions\Posts\SoftDeletePostAction;
 use App\Enums\PostStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreatePostRequest;
@@ -62,11 +63,11 @@ final class PostController extends Controller
             ->with('success', 'Post has been updated.');
     }
 
-    public function delete(Post $post): RedirectResponse
+    public function delete(Post $post, SoftDeletePostAction $action): RedirectResponse
     {
         $this->authorize('soft-delete', $post);
 
-        $post->delete();
+        $action->execute($post);
 
         return to_route('posts.index')
             ->with('success', 'Post has been deleted.');
