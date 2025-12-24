@@ -21,3 +21,13 @@ it('soft deletes a post successfully', function () {
 
     assertDatabaseCount('posts', 1);
 });
+
+it('throws a logic exception when trying to soft delete an already soft deleted post.', function () {
+    $post = new NewPost()->first();
+    $post->delete();
+
+    $action = new SoftDeletePostAction();
+
+    expect(static fn () => $action->execute($post))
+        ->toThrow(LogicException::class, 'You cannot soft delete an already deleted post.');
+});
