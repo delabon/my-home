@@ -23,12 +23,13 @@ defineProps({
                     <h3 v-text="post.title"></h3>
                 </li>
             </ul>
-            <div v-if="flash.success" class="p-4 my-4 text-green-800 bg-green-100 border border-green-200 rounded-base">
-                ✓ {{ flash.success }}
-            </div>
         </div>
         <div v-else>
             No posts yet!
+        </div>
+
+        <div v-if="flash.success" class="p-4 my-4 text-green-800 bg-green-100 border border-green-200 rounded-base">
+            ✓ {{ flash.success }}
         </div>
     </div>
 </template>

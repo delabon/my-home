@@ -61,4 +61,14 @@ final class PostController extends Controller
         return to_route('posts.index')
             ->with('success', 'Post has been updated.');
     }
+
+    public function delete(Post $post): RedirectResponse
+    {
+        $this->authorize('soft-delete', $post);
+
+        $post->delete();
+
+        return to_route('posts.index')
+            ->with('success', 'Post has been deleted.');
+    }
 }

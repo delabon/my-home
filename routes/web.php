@@ -44,5 +44,8 @@ Route::prefix('dashboard')
             Route::patch('{post}', [PostController::class, 'update'])
                 ->middleware(['throttle:10,1']) // 10 attempts per minute
                 ->name('.update');
+            Route::delete('{post}', [PostController::class, 'delete'])
+                ->middleware(['throttle:10,1']) // 10 attempts per minute
+                ->name('.delete');
         });
     });
