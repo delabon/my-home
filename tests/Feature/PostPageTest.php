@@ -25,3 +25,18 @@ it('renders the post page successfully', function () {
                 ->where('post.data.formatted_created_at', $post->formatted_created_at);
         });
 });
+
+it('returns a not found response when post does not exist', function () {
+    $response = $this->get(route('posts.view', 'does-not-exist-slug'));
+
+    $response->assertNotFound();
+});
+
+it('returns a not found response when trying to view a draft post', function () {
+    $post = new NewPost([
+        'status' => PostStatus::Draft->value,
+    ])->first();
+    $response = $this->get(route('posts.view', $post));
+
+    $response->assertNotFound();
+});
