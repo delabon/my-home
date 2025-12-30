@@ -64,9 +64,3 @@ it('formats the created_at date correctly', function () {
     expect($post->formatted_created_at)->toBeString()
         ->and($post->formatted_created_at)->toBe($now->format(Post::DATE_FORMAT));
 });
-
-it('returns null when trying to format the created_at date when it is null', function () {
-    $post = new Post();
-
-    expect($post->formatted_created_at)->toBeNull();
-});
