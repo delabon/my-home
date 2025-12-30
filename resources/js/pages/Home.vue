@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import SimplePagination from "@/components/ui/SimplePagination.vue";
-import A from "@/components/ui/A.vue";
 import {Link} from "@inertiajs/vue3";
 import FrontendLayout from "@/layouts/FrontendLayout.vue";
+import Menu from "@/components/ui/Menu.vue";
 
 defineProps({
     posts: {
@@ -19,10 +19,7 @@ defineProps({
             <p class="text-xl">
                 An expert web developer from Tunisia with over 12 years of experience building robust and scalable applications.
             </p>
-            <div class="flex items-center gap-3">
-                <A label="LinkedIn" href="https://www.linkedin.com/in/sabri-taieb/" target="_blank"/>
-                <A label="GitHub" href="https://github.com/delabon/" target="_blank"/>
-            </div>
+            <Menu/>
         </div>
 
         <div class="mt-10">
