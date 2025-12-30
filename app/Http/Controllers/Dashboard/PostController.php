@@ -63,7 +63,7 @@ final class PostController extends Controller
             ->with('success', 'Post has been updated.');
     }
 
-    public function delete(Post $post, SoftDeletePostAction $action): RedirectResponse
+    public function destroy(Post $post, SoftDeletePostAction $action): RedirectResponse
     {
         $this->authorize('soft-delete', $post);
 

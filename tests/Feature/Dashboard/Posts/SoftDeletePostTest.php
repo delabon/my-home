@@ -15,7 +15,7 @@ it('soft deletes a post successfully', function () {
         'status' => PostStatus::Published->value,
     ])->first();
 
-    $response = $this->delete(route('posts.delete', $post));
+    $response = $this->delete(route('posts.destroy', $post));
 
     $response->assertRedirectToRoute('posts.index')
         ->assertSessionHas('success', 'Post has been deleted.');
@@ -34,7 +34,7 @@ it('soft deletes only one post and leave the other', function () {
         'status' => PostStatus::Published->value,
     ], 2)->posts;
 
-    $response = $this->delete(route('posts.delete', $posts[0]));
+    $response = $this->delete(route('posts.destroy', $posts[0]));
 
     $response->assertRedirectToRoute('posts.index')
         ->assertSessionHas('success', 'Post has been deleted.');
@@ -52,7 +52,7 @@ it('soft deletes only one post and leave the other', function () {
 it('returns a not found response when trying to delete a non-existent post', function () {
     new NewUser()->login($this)->user;
 
-    $response = $this->delete(route('posts.delete', 1));
+    $response = $this->delete(route('posts.destroy', 1));
 
     $response->assertNotFound();
 });
@@ -65,7 +65,7 @@ it('returns a too many requests response when trying to delete posts too many ti
     ], 11)->posts;
 
     for ($i = 0; $i < 10; ++$i) {
-        $response = $this->delete(route('posts.delete', $posts[$i]));
+        $response = $this->delete(route('posts.destroy', $posts[$i]));
 
         $response->assertRedirectToRoute('posts.index')
             ->assertSessionHas('success', 'Post has been deleted.');
@@ -75,7 +75,7 @@ it('returns a too many requests response when trying to delete posts too many ti
         expect($posts[$i]->trashed())->toBeTrue();
     }
 
-    $response = $this->delete(route('posts.delete', $posts[10]));
+    $response = $this->delete(route('posts.destroy', $posts[10]));
 
     $response->assertTooManyRequests();
     assertDatabaseCount('posts', 11);
@@ -93,7 +93,7 @@ it('returns a not found response when trying to delete an already deleted post',
     ])->first();
     $post->delete();
 
-    $response = $this->delete(route('posts.delete', $post));
+    $response = $this->delete(route('posts.destroy', $post));
 
     $response->assertNotFound();
 
@@ -107,7 +107,7 @@ it('redirects to the login page when trying to delete a post when not logged in'
         'status' => PostStatus::Published->value,
     ])->first();
 
-    $response = $this->delete(route('posts.delete', $post));
+    $response = $this->delete(route('posts.destroy', $post));
 
     $response->assertRedirectToRoute('login');
 
@@ -121,7 +121,7 @@ test('non-author cannot soft delete posts of other authors', function () {
         'status' => PostStatus::Published->value,
     ])->first();
 
-    $response = $this->delete(route('posts.delete', $post));
+    $response = $this->delete(route('posts.destroy', $post));
 
     $response->assertForbidden();
 
