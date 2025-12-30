@@ -19,6 +19,8 @@ final class HomeController extends Controller
         $posts = $action->execute(perPage: self::PER_PAGE);
 
         return Inertia::render('Home', [
+            'title' => config('app.homepage.title', ''),
+            'description' => config('app.homepage.description', ''),
             'posts' => PostResource::collection($posts),
         ]);
     }

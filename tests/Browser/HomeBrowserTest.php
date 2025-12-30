@@ -6,13 +6,21 @@ use App\Enums\PostStatus;
 use Tests\NewPost;
 
 test('page passes smoke test (no JS errors and console logs)', function () {
-    visit('/')->assertNoSmoke();
+    visit(route('home'))->assertNoSmoke();
 });
 
 it('renders the homepage title correctly', function () {
     $page = visit(route('home'));
 
     $page->assertTitle(config('app.name'));
+});
+
+it('renders the custom page title and description correctly', function () {
+    $page = visit(route('home'));
+
+    $page->assertSee(config('app.homepage.title'))
+        ->assertSee(config('app.homepage.description'));
+
 });
 
 it('shows no posts yet message when there are no posts', function () {

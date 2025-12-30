@@ -8,6 +8,14 @@ defineProps({
     posts: {
         type: Object,
         required: true,
+    },
+    title: {
+        type: String,
+        required: true,
+    },
+    description: {
+        type: String,
+        required: true,
     }
 });
 </script>
@@ -15,10 +23,8 @@ defineProps({
 <template>
     <frontend-layout>
         <div class="flex flex-col gap-2">
-            <h1 class="text-3xl text-white">Hey, I'm Sabri Taieb</h1>
-            <p class="text-xl">
-                An expert web developer from Tunisia with over 12 years of experience building robust and scalable applications.
-            </p>
+            <h1 class="text-3xl text-white">{{ title }}</h1>
+            <p class="text-xl">{{ description }}</p>
             <Menu/>
         </div>
 

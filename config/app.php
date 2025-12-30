@@ -125,4 +125,8 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    'homepage' => [
+        'title' => env('APP_HOMEPAGE_TITLE', ''),
+        'description' => env('APP_HOMEPAGE_DESCRIPTION', ''),
+    ]
 ];
