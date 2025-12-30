@@ -29,7 +29,7 @@ defineProps({
             <div v-if="posts.data.length > 0" class="flex flex-col gap-5">
                 <article v-for="post in posts.data" :key="post.id" class="flex flex-col gap-1">
                     <h3>
-                        <Link href="/{{ post.slug }}" class="hover:underline hover:text-white">{{ post.title }}</Link>
+                        <Link :href="`/blog/${post.slug}`" class="hover:underline hover:text-white">{{ post.title }}</Link>
                     </h3>
                     <span>{{ post.formatted_created_at }}</span>
                 </article>

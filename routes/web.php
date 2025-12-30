@@ -2,12 +2,15 @@
 
 declare(strict_types=1);
 
-use App\Http\Controllers\Dashboard\PostController;
+use App\Http\Controllers\Dashboard\PostController as DashboardPostController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', HomeController::class)->name('home');
+
+Route::get('/blog/{post:slug}', PostController::class)->name('posts.view');
 
 Route::prefix('login')
     ->middleware(['guest'])
@@ -32,19 +35,19 @@ Route::prefix('dashboard')
 
         // Posts
         Route::prefix('posts')->name('posts')->group(function () {
-            Route::get('/', [PostController::class, 'index'])
+            Route::get('/', [DashboardPostController::class, 'index'])
                 ->name('.index');
-            Route::post('/', [PostController::class, 'store'])
+            Route::post('/', [DashboardPostController::class, 'store'])
                 ->middleware(['throttle:10,1']) // 10 attempts per minute
                 ->name('.store');
-            Route::get('create', [PostController::class, 'create'])
+            Route::get('create', [DashboardPostController::class, 'create'])
                 ->name('.create');
-            Route::get('{post}/edit', [PostController::class, 'edit'])
+            Route::get('{post}/edit', [DashboardPostController::class, 'edit'])
                 ->name('.edit');
-            Route::patch('{post}', [PostController::class, 'update'])
+            Route::patch('{post}', [DashboardPostController::class, 'update'])
                 ->middleware(['throttle:10,1']) // 10 attempts per minute
                 ->name('.update');
-            Route::delete('{post}', [PostController::class, 'destroy'])
+            Route::delete('{post}', [DashboardPostController::class, 'destroy'])
                 ->middleware(['throttle:10,1']) // 10 attempts per minute
                 ->name('.destroy');
         });
