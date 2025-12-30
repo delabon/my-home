@@ -128,5 +128,5 @@ return [
     'homepage' => [
         'title' => env('APP_HOMEPAGE_TITLE', ''),
         'description' => env('APP_HOMEPAGE_DESCRIPTION', ''),
-    ]
+    ],
 ];

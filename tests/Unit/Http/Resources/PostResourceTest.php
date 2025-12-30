@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Resources\PostResource;
+use Illuminate\Http\Request;
 use Tests\NewPost;
 
 it('returns the resource array', function () {
@@ -10,7 +11,7 @@ it('returns the resource array', function () {
         ->first();
     $resource = new PostResource($post);
 
-    $resourceData = $resource->toArray(\Illuminate\Http\Request::createFromGlobals());
+    $resourceData = $resource->toArray(Request::createFromGlobals());
 
     expect($resourceData)->toBeArray()
         ->and($resourceData)->toEqual([

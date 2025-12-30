@@ -22,9 +22,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 final class Post extends Model
 {
-    public const string DATE_FORMAT = 'M j, Y';
-
     use SoftDeletes;
+
+    public const string DATE_FORMAT = 'M j, Y';
 
     protected $fillable = [
         'title',
