@@ -15,7 +15,7 @@ defineProps({
 
 <template>
     <nav>
-        <Link :href="prevUrl" v-if="prevUrl">Prev</Link>
-        <Link :href="nextUrl" v-if="nextUrl">Next</Link>
+        <Link :href="prevUrl" v-if="prevUrl" class="hover:underline hover:text-white">Prev</Link>
+        <Link :href="nextUrl" v-if="nextUrl" class="hover:underline hover:text-white">Next</Link>
     </nav>
 </template>
