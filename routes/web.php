@@ -27,7 +27,7 @@ Route::post('logout', [LoginController::class, 'destroy'])
 Route::prefix('dashboard')
     ->middleware(['auth'])
     ->group(function () {
-        Route::get('/', function () {})
+        Route::inertia('/', 'dashboard/Dashboard')
             ->name('dashboard');
 
         // Posts
