@@ -22,6 +22,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 final class Post extends Model
 {
+    public const string DATE_FORMAT = 'M j, Y';
+
     use SoftDeletes;
 
     protected $fillable = [
@@ -46,5 +48,10 @@ final class Post extends Model
     public function scopePublished(Builder $query): Builder
     {
         return $query->where('status', PostStatus::Published);
+    }
+
+    public function getFormattedCreatedAtAttribute(): ?string
+    {
+        return $this->created_at?->format(self::DATE_FORMAT);
     }
 }

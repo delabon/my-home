@@ -29,9 +29,9 @@ defineProps({
                 <div v-if="posts.data.length > 0" class="flex flex-col gap-5">
                     <article v-for="post in posts.data" :key="post.id" class="flex flex-col gap-1">
                         <h3>
-                            <Link href="#" class="hover:underline hover:text-white">{{ post.title}}</Link>
+                            <Link href="/{{ post.slug }}" class="hover:underline hover:text-white">{{ post.title }}</Link>
                         </h3>
-                        <span>{{ post.created_at }}</span>
+                        <span>{{ post.formatted_created_at }}</span>
                     </article>
                 </div>
                 <p v-else>
@@ -40,8 +40,8 @@ defineProps({
 
                 <div class="mt-5">
                     <SimplePagination
-                        :prevUrl="posts.prev_page_url"
-                        :nextUrl="posts.next_page_url"
+                        :prevUrl="posts.links.prev"
+                        :nextUrl="posts.links.next"
                     />
                 </div>
             </div>
