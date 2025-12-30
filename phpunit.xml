@@ -34,5 +34,7 @@
         <env name="PULSE_ENABLED" value="false"/>
         <env name="TELESCOPE_ENABLED" value="false"/>
         <env name="NIGHTWATCH_ENABLED" value="false"/>
+        <env name="APP_HOMEPAGE_TITLE" value="Test homepage title"/>
+        <env name="APP_HOMEPAGE_DESCRIPTION" value="Test homepage description"/>
     </php>
 </phpunit>

@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Enums\PostStatus;
+use App\Models\Post;
 use App\Models\User;
 use Illuminate\Database\UniqueConstraintViolationException;
 use Tests\NewPost;
@@ -52,4 +53,14 @@ test('status should be unique', function () {
             'slug' => 'my-post',
         ])->first();
     })->toThrow(UniqueConstraintViolationException::class);
+});
+
+it('formats the created_at date correctly', function () {
+    $now = now();
+    $post = new NewPost([
+        'created_at' => $now,
+    ])->first();
+
+    expect($post->formatted_created_at)->toBeString()
+        ->and($post->formatted_created_at)->toBe($now->format(Post::DATE_FORMAT));
 });

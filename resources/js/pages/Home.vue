@@ -1,28 +1,52 @@
 <script setup lang="ts">
 import SimplePagination from "@/components/ui/SimplePagination.vue";
+import {Link} from "@inertiajs/vue3";
+import FrontendLayout from "@/layouts/FrontendLayout.vue";
+import Menu from "@/components/ui/Menu.vue";
 
 defineProps({
     posts: {
         type: Object,
+        required: true,
+    },
+    title: {
+        type: String,
+        required: true,
+    },
+    description: {
+        type: String,
         required: true,
     }
 });
 </script>
 
 <template>
-    <div>
-        <div v-if="posts.data.length > 0">
-            <article v-for="post in posts.data" :key="post.id">
-                <h3>{{ post.title}}</h3>
-            </article>
+    <frontend-layout>
+        <div class="flex flex-col gap-2">
+            <h1 class="text-3xl text-white">{{ title }}</h1>
+            <p class="text-xl">{{ description }}</p>
+            <Menu/>
         </div>
-        <p v-else>
-            No posts yet!
-        </p>
 
-        <SimplePagination
-            :prevUrl="posts.prev_page_url"
-            :nextUrl="posts.next_page_url"
-        />
-    </div>
+        <div class="mt-10">
+            <div v-if="posts.data.length > 0" class="flex flex-col gap-5">
+                <article v-for="post in posts.data" :key="post.id" class="flex flex-col gap-1">
+                    <h3>
+                        <Link :href="`/blog/${post.slug}`" class="hover:underline hover:text-white">{{ post.title }}</Link>
+                    </h3>
+                    <span>{{ post.formatted_created_at }}</span>
+                </article>
+            </div>
+            <p v-else>
+                No posts yet!
+            </p>
+
+            <div class="mt-5">
+                <SimplePagination
+                    :prevUrl="posts.links.prev"
+                    :nextUrl="posts.links.next"
+                />
+            </div>
+        </div>
+    </frontend-layout>
 </template>

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Actions\Posts\PaginatePostsAction;
+use App\Http\Resources\PostResource;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -18,7 +19,9 @@ final class HomeController extends Controller
         $posts = $action->execute(perPage: self::PER_PAGE);
 
         return Inertia::render('Home', [
-            'posts' => $posts,
+            'title' => config('app.homepage.title', ''),
+            'description' => config('app.homepage.description', ''),
+            'posts' => PostResource::collection($posts),
         ]);
     }
 }
