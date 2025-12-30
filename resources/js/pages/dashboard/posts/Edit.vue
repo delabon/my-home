@@ -33,7 +33,7 @@ const status = ref(props.post.status || 'draft');
                 <h1 class="text-2xl">Edit post: {{ post.title }}</h1>
 
                 <Form
-                    :action="posts.delete(post.id).url"
+                    :action="posts.destroy(post.id).url"
                     method="delete"
                     #default="{
                         processing,

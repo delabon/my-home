@@ -27,7 +27,7 @@ Route::post('logout', [LoginController::class, 'destroy'])
 Route::prefix('dashboard')
     ->middleware(['auth'])
     ->group(function () {
-        Route::get('/', function () {})
+        Route::inertia('/', 'dashboard/Dashboard')
             ->name('dashboard');
 
         // Posts
@@ -44,8 +44,8 @@ Route::prefix('dashboard')
             Route::patch('{post}', [PostController::class, 'update'])
                 ->middleware(['throttle:10,1']) // 10 attempts per minute
                 ->name('.update');
-            Route::delete('{post}', [PostController::class, 'delete'])
+            Route::delete('{post}', [PostController::class, 'destroy'])
                 ->middleware(['throttle:10,1']) // 10 attempts per minute
-                ->name('.delete');
+                ->name('.destroy');
         });
     });
