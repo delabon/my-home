@@ -3,11 +3,11 @@ import { Link } from '@inertiajs/vue3';
 
 defineProps({
     nextUrl: {
-        type: String,
+        type: [String, null],
         required: true,
     },
     prevUrl: {
-        type: String,
+        type: [String, null],
         required: true,
     },
 });
