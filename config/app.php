@@ -129,4 +129,9 @@ return [
         'title' => env('APP_HOMEPAGE_TITLE', ''),
         'description' => env('APP_HOMEPAGE_DESCRIPTION', ''),
     ],
+
+    'links' => [
+        'linkedin' => env('APP_LINKS_LINKEDIN', ''),
+        'github' => env('APP_LINKS_GITHUB', ''),
+    ]
 ];

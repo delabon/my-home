@@ -40,6 +40,10 @@ final class HandleInertiaRequests extends Middleware
         return [
             ...parent::share($request),
             'name' => config('app.name'),
+            'links' => [
+                'linkedin' => config('app.links.linkedin'),
+                'github' => config('app.links.github'),
+            ],
             'auth' => [
                 'user' => $request->user(),
             ],
