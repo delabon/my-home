@@ -3,21 +3,22 @@ import { Head, Form } from '@inertiajs/vue3';
 import Input from "@/components/ui/Input.vue";
 import Button from "@/components/ui/Button.vue";
 import { login } from "@/routes";
+import AuthLayout from "@/layouts/AuthLayout.vue";
 
 </script>
 
 <template>
     <Head title="Login"/>
-    <div>
-        <h1>Login</h1>
+    <AuthLayout>
+        <h1 class="text-3xl text-white">Login</h1>
 
         <Form
             :action="login().url"
             method="post"
             #default="{
-                errors,
-                processing,
-            }"
+                    errors,
+                    processing,
+                }"
             class="flex flex-col gap-4 mt-6"
             resetOnSuccess
         >
@@ -44,5 +45,5 @@ import { login } from "@/routes";
                 type="submit"
             />
         </Form>
-    </div>
+    </AuthLayout>
 </template>
