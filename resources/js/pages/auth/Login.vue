@@ -4,13 +4,17 @@ import Input from "@/components/ui/Input.vue";
 import Button from "@/components/ui/Button.vue";
 import { login } from "@/routes";
 import AuthLayout from "@/layouts/AuthLayout.vue";
+import Menu from "@/components/ui/Menu.vue";
 
 </script>
 
 <template>
     <Head title="Login"/>
     <AuthLayout>
-        <h1 class="text-3xl text-white">Login</h1>
+        <div class="flex flex-col gap-2">
+            <h1 class="text-3xl text-white">Login</h1>
+            <Menu/>
+        </div>
 
         <Form
             :action="login().url"
