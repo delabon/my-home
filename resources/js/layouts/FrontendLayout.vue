@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import {usePage} from "@inertiajs/vue3";
-
-const page = usePage();
+import Copyright from "@/components/ui/Copyright.vue";
 </script>
 
 <template>
@@ -10,8 +8,6 @@ const page = usePage();
             <slot />
         </div>
 
-        <div class="w-2xl">
-            &copy; {{ new Date().getFullYear() }} - {{ page.props.name }} - All rights reserved
-        </div>
+        <Copyright classes="w-2xl"/>
     </div>
 </template>
