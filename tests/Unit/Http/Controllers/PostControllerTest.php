@@ -22,6 +22,7 @@ it('returns an Inertia response with post data successfully', function () {
     $response = $inertiaResponse->toResponse($request);
 
     expect($inertiaResponse)->toBeInstanceOf(InertiaResponse::class)
+        ->and($response)->toBeInstanceOf(Response::class)
         ->and($response->status())->toBe(Response::HTTP_OK);
 });
 
