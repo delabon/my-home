@@ -5,10 +5,10 @@ declare(strict_types=1);
 use App\Enums\PostStatus;
 use App\Http\Controllers\PostController;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Inertia\Response as InertiaResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Tests\NewPost;
-use Inertia\Response as InertiaResponse;
-use Illuminate\Http\Response;
 
 it('returns an Inertia response with post data successfully', function () {
     $post = new NewPost([

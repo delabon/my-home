@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 use App\Actions\Posts\PaginatePostsAction;
 use App\Http\Controllers\HomeController;
-use Inertia\Response as InertiaResponse;
 use Illuminate\Http\Response;
+use Inertia\Response as InertiaResponse;
 
 it('returns an Inertia response successfully', function () {
     $request = Request::create(route('home'));
