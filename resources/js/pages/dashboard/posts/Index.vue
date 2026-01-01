@@ -2,7 +2,7 @@
 import {Head, Link, usePage} from "@inertiajs/vue3";
 import DashboardLayout from "@/layouts/DashboardLayout.vue";
 import DashboardMenu from "@/components/ui/DashboardMenu.vue";
-import {edit as postEditRoute} from "@/routes/posts";
+import {edit as postEditRoute, create as postCreateRoute} from "@/routes/posts";
 import SimplePagination from "@/components/ui/SimplePagination.vue";
 
 const flash = usePage().props.flash;
@@ -21,7 +21,11 @@ defineProps({
     <DashboardLayout>
         <div class="flex flex-col gap-3">
             <DashboardMenu/>
-            <h1 class="text-3xl text-white">All Posts</h1>
+            <div class="flex items-center justify-between flex-wrap gap-3">
+                <h1 class="text-3xl text-white">All Posts</h1>
+
+                <Link :href="postCreateRoute()" type="button" class="text-black bg-gray-400 p-3 rounded cursor-pointer">Create Post</Link>
+            </div>
         </div>
 
         <div class="mt-10">
@@ -45,7 +49,7 @@ defineProps({
                             <th scope="row" class="px-6 py-4 font-medium text-heading whitespace-nowrap" v-text="post.title"></th>
                             <td class="px-6 py-4" v-text="post.status.charAt(0).toUpperCase() + post.status.slice(1)"></td>
                             <td class="px-6 py-4">
-                                <Link :href="postEditRoute(post.id)">Edit</Link>
+                                <Link :href="postEditRoute(post.id)" class="hover:underline hover:text-white">Edit</Link>
                             </td>
                         </tr>
                     </tbody>

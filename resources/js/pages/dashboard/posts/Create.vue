@@ -21,6 +21,7 @@ defineProps({
     <DashboardLayout>
         <div class="flex flex-col gap-3">
             <DashboardMenu/>
+
             <h1 class="text-3xl text-white">Create a new post</h1>
         </div>
 
