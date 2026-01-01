@@ -12,6 +12,7 @@ use App\Enums\PostStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreatePostRequest;
 use App\Http\Requests\EditPostRequest;
+use App\Http\Resources\PostResource;
 use App\Models\Post;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\RedirectResponse;
@@ -25,7 +26,7 @@ final class PostController extends Controller
     public function index(PaginatePostsAction $action): Response
     {
         return Inertia::render('dashboard/posts/Index', [
-            'posts' => $action->execute(),
+            'posts' => PostResource::collection($action->execute()),
         ]);
     }
 

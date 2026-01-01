@@ -25,6 +25,7 @@ final class PostResource extends JsonResource
             'title' => $this->resource->title,
             'slug' => $this->resource->slug,
             'body' => $this->resource->body,
+            'status' => $this->resource->status->value,
             'formatted_created_at' => $this->resource->formatted_created_at,
         ];
     }
