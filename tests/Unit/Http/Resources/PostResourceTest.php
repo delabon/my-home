@@ -18,7 +18,7 @@ it('returns the resource array', function () {
             'id' => $post->id,
             'title' => $post->title,
             'slug' => $post->slug,
-            'status' => $post->status,
+            'status' => $post->status->value,
             'body' => $post->body,
             'formatted_created_at' => $post->formatted_created_at,
         ]);
