@@ -20,8 +20,6 @@ defineProps({
             <span>{{ post.data.formatted_created_at }}</span>
         </div>
 
-        <div class="mt-10">
-            {{ post.data.body }}
-        </div>
+        <div class="mt-10 page-content" v-html="post.data.body"></div>
     </FrontendLayout>
 </template>
