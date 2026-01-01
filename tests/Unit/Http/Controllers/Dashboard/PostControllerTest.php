@@ -13,9 +13,9 @@ use App\Http\Requests\EditPostRequest;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Tests\NewPost;
-use Inertia\Response as InertiaResponse;
 use Illuminate\Http\Response;
+use Inertia\Response as InertiaResponse;
+use Tests\NewPost;
 use Tests\NewUser;
 
 use function Pest\Laravel\assertDatabaseCount;

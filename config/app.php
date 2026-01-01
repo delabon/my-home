@@ -133,5 +133,5 @@ return [
     'links' => [
         'linkedin' => env('APP_LINKS_LINKEDIN', ''),
         'github' => env('APP_LINKS_GITHUB', ''),
-    ]
+    ],
 ];
