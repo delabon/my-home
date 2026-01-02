@@ -7,13 +7,55 @@ use App\Enums\PostStatus;
 use Illuminate\Pagination\Paginator;
 use Tests\NewPost;
 
-it('paginates published posts successfully', function () {
-    $posts = new NewPost([
+it('paginates posts with any status successfully', function () {
+    $publishedPost = new NewPost([
         'status' => PostStatus::Published->value,
+    ], 2)->posts;
+    $draftPosts = new NewPost([
+        'status' => PostStatus::Draft->value,
     ], 3)->posts;
     $action = new PaginatePostsAction();
 
-    $paginatedPosts = $action->execute(perPage: 2);
+    $paginatedPosts = $action->execute(perPage: 4, status: null);
+
+    $paginationData = $paginatedPosts->toArray();
+
+    expect($paginatedPosts)->toBeInstanceOf(Paginator::class)
+        ->and($paginationData)->toHaveKeys([
+            'current_page',
+            'current_page_url',
+            'data',
+            'first_page_url',
+            'next_page_url',
+            'per_page',
+        ])
+        ->and($paginationData['current_page'])->toBeOne()
+        ->and($paginationData['first_page_url'])->toContain('?page=1')
+        ->and($paginationData['next_page_url'])->toContain('?page=2')
+        ->and($paginationData['current_page_url'])->toBe($paginationData['first_page_url'])
+        ->and($paginationData['per_page'])->toBe(4)
+        ->and($paginationData['data'])->toBeArray()
+        ->and($paginationData['data'])->toHaveCount(4)
+        ->and($paginationData['data'][0]['id'])->toBe($publishedPost[0]->id)
+        ->and($paginationData['data'][1]['id'])->toBe($publishedPost[1]->id)
+        ->and($paginationData['data'][0]['status'])->toBe(PostStatus::Published->value)
+        ->and($paginationData['data'][1]['status'])->toBe(PostStatus::Published->value)
+        ->and($paginationData['data'][2]['id'])->toBe($draftPosts[0]->id)
+        ->and($paginationData['data'][3]['id'])->toBe($draftPosts[1]->id)
+        ->and($paginationData['data'][2]['status'])->toBe(PostStatus::Draft->value)
+        ->and($paginationData['data'][3]['status'])->toBe(PostStatus::Draft->value);
+});
+
+it('paginates published posts successfully', function () {
+    $publishedPosts = new NewPost([
+        'status' => PostStatus::Published->value,
+    ], 3)->posts;
+    new NewPost([
+        'status' => PostStatus::Draft->value,
+    ], 2)->posts;
+    $action = new PaginatePostsAction();
+
+    $paginatedPosts = $action->execute(perPage: 2, status: PostStatus::Published);
 
     $paginationData = $paginatedPosts->toArray();
 
@@ -33,10 +75,45 @@ it('paginates published posts successfully', function () {
         ->and($paginationData['per_page'])->toBe(2)
         ->and($paginationData['data'])->toBeArray()
         ->and($paginationData['data'])->toHaveCount(2)
-        ->and($paginationData['data'][0]['id'])->toBe($posts[0]->id)
-        ->and($paginationData['data'][1]['id'])->toBe($posts[1]->id)
+        ->and($paginationData['data'][0]['id'])->toBe($publishedPosts[0]->id)
+        ->and($paginationData['data'][1]['id'])->toBe($publishedPosts[1]->id)
         ->and($paginationData['data'][0]['status'])->toBe(PostStatus::Published->value)
         ->and($paginationData['data'][1]['status'])->toBe(PostStatus::Published->value);
+});
+
+it('paginates draft posts successfully', function () {
+    new NewPost([
+        'status' => PostStatus::Published->value,
+    ], 2)->posts;
+    $draftPosts = new NewPost([
+        'status' => PostStatus::Draft->value,
+    ], 3)->posts;
+    $action = new PaginatePostsAction();
+
+    $paginatedPosts = $action->execute(perPage: 2, status: PostStatus::Draft);
+
+    $paginationData = $paginatedPosts->toArray();
+
+    expect($paginatedPosts)->toBeInstanceOf(Paginator::class)
+        ->and($paginationData)->toHaveKeys([
+            'current_page',
+            'current_page_url',
+            'data',
+            'first_page_url',
+            'next_page_url',
+            'per_page',
+        ])
+        ->and($paginationData['current_page'])->toBeOne()
+        ->and($paginationData['first_page_url'])->toContain('?page=1')
+        ->and($paginationData['next_page_url'])->toContain('?page=2')
+        ->and($paginationData['current_page_url'])->toBe($paginationData['first_page_url'])
+        ->and($paginationData['per_page'])->toBe(2)
+        ->and($paginationData['data'])->toBeArray()
+        ->and($paginationData['data'])->toHaveCount(2)
+        ->and($paginationData['data'][0]['id'])->toBe($draftPosts[0]->id)
+        ->and($paginationData['data'][1]['id'])->toBe($draftPosts[1]->id)
+        ->and($paginationData['data'][0]['status'])->toBe(PostStatus::Draft->value)
+        ->and($paginationData['data'][1]['status'])->toBe(PostStatus::Draft->value);
 });
 
 it('paginates posts number smaller than per page', function () {
