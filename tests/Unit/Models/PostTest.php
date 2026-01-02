@@ -6,12 +6,14 @@ use App\Enums\PostStatus;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Database\UniqueConstraintViolationException;
+use Illuminate\Support\Carbon;
 use Tests\NewPost;
 use Tests\NewUser;
 
 test('to array', function () {
     $post = new NewPost([
-        'status' => PostStatus::Draft->value,
+        'status' => PostStatus::Published->value,
+        'published_at' => now(),
     ])->first();
 
     expect($post->toArray())->toHaveKeys([
@@ -21,6 +23,7 @@ test('to array', function () {
         'slug',
         'body',
         'status',
+        'published_at',
         'created_at',
         'updated_at',
     ]);
@@ -32,6 +35,17 @@ it('casts status into PostStatus enum', function () {
     ])->first();
 
     expect($post->status)->toBeInstanceOf(PostStatus::class);
+});
+
+it('casts published_at into Carbon instance', function () {
+    $now = now();
+    $post = new NewPost([
+        'status' => PostStatus::Published->value,
+        'published_at' => $now,
+    ])->first();
+
+    expect($post->published_at)->toBeInstanceOf(Carbon::class)
+        ->and($post->published_at->timestamp)->toBe($now->timestamp);
 });
 
 it('belongs to a user', function () {
@@ -55,12 +69,21 @@ test('status should be unique', function () {
     })->toThrow(UniqueConstraintViolationException::class);
 });
 
-it('formats the created_at date correctly', function () {
+it('formats the published_at date correctly', function () {
     $now = now();
     $post = new NewPost([
-        'created_at' => $now,
+        'status' => PostStatus::Published->value,
+        'published_at' => $now,
     ])->first();
 
-    expect($post->formatted_created_at)->toBeString()
-        ->and($post->formatted_created_at)->toBe($now->format(Post::DATE_FORMAT));
+    expect($post->formatted_published_at)->toBeString()
+        ->and($post->formatted_published_at)->toBe($now->format(Post::DATE_FORMAT));
+});
+
+test('formatted_published_at returns null when the post is not published', function () {
+    $post = new NewPost([
+        'status' => PostStatus::Draft->value,
+    ])->first();
+
+    expect($post->formatted_published_at)->toBeNull();
 });

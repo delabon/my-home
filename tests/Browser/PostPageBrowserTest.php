@@ -18,6 +18,6 @@ it('renders the post page correctly', function () {
     );
     $page->assertTitle($pageTitle)
         ->assertSee($post->title)
-        ->assertSee($post->formatted_created_at)
+        ->assertSee($post->formatted_published_at)
         ->assertSee($post->body);
 });

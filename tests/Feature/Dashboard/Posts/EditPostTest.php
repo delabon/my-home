@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Enums\PostStatus;
 use App\Models\Post;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 use Inertia\Testing\AssertableInertia;
 use Tests\NewPost;
@@ -53,6 +54,7 @@ it('updates a post successfully', function () {
     $user = new NewUser()->login($this)->user;
     $postData = NewPost::validPostData();
     $postData['user_id'] = $user->id;
+    $postData['status'] = PostStatus::Draft->value;
     $post = new NewPost($postData)->first();
     $oldUpdatedAtTimestamp = $post->updated_at->timestamp;
 
@@ -60,7 +62,7 @@ it('updates a post successfully', function () {
         'title' => 'This title has been editing',
         'slug' => 'updated-slug',
         'body' => 'This body has been editing',
-        'status' => PostStatus::Draft->value,
+        'status' => PostStatus::Published->value,
     ]);
 
     $response->assertRedirectToRoute('posts.index')
@@ -73,7 +75,9 @@ it('updates a post successfully', function () {
         ->and($post->title)->toBe('This title has been editing')
         ->and($post->slug)->toBe('updated-slug')
         ->and($post->body)->toBe('This body has been editing')
-        ->and($post->status)->toBe(PostStatus::Draft)
+        ->and($post->status)->toBe(PostStatus::Published)
+        ->and($post->published_at)->toBeInstanceOf(Carbon::class)
+        ->and($post->published_at->timestamp)->toBeGreaterThanOrEqual($oldUpdatedAtTimestamp)
         ->and($post->updated_at->timestamp)->toBeGreaterThanOrEqual($oldUpdatedAtTimestamp);
 });
 
@@ -135,14 +139,12 @@ it('returns a too many requests response when trying to update a post too many t
 
 it('returns forbidden response when trying to update a post with a non-owner user', function () {
     $user = new NewUser()->login($this)->user;
-    $post = new NewPost([
-        'status' => NewPost::VALID_STATUS,
-    ])->first();
+    $post = new NewPost()->first();
 
     $response = $this->patch(route('posts.update', $post), [
         'title' => 'This title has been editing',
         'body' => 'This body has been editing',
-        'status' => PostStatus::Draft->value,
+        'status' => PostStatus::Published->value,
     ]);
 
     $response->assertForbidden();
@@ -152,7 +154,7 @@ it('returns forbidden response when trying to update a post with a non-owner use
     expect($post->user_id)->not()->toBe($user->id)
         ->and($post->title)->not()->toBe('This title has been editing')
         ->and($post->body)->not()->toBe('This body has been editing')
-        ->and($post->status)->not()->toBe(PostStatus::Draft);
+        ->and($post->status)->not()->toBe(PostStatus::Published);
 });
 
 it('fails with invalid titles', function (string $invalidTitle, string $expectedMessage) {

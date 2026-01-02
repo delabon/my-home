@@ -8,6 +8,7 @@ use App\Actions\Posts\CreatePostAction;
 use App\Actions\Posts\EditPostAction;
 use App\Actions\Posts\PaginatePostsAction;
 use App\Actions\Posts\SoftDeletePostAction;
+use App\Enums\OrderDirection;
 use App\Enums\PostStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreatePostRequest;
@@ -25,8 +26,13 @@ final class PostController extends Controller
 
     public function index(PaginatePostsAction $action): Response
     {
+        $posts = $action->execute(
+            orderColumn: 'id',
+            orderDirection: OrderDirection::Desc
+        );
+
         return Inertia::render('dashboard/posts/Index', [
-            'posts' => PostResource::collection($action->execute()),
+            'posts' => PostResource::collection($posts),
         ]);
     }
 

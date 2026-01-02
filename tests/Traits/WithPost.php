@@ -17,7 +17,7 @@ trait WithPost
 
     public const string VALID_BODY = 'This is a valid post body it should be more than 20 chars';
 
-    public const string VALID_STATUS = PostStatus::Published->value;
+    public const string VALID_STATUS = PostStatus::Draft->value;
 
     public Collection $posts;
 
@@ -28,6 +28,7 @@ trait WithPost
             'slug' => self::VALID_SLUG,
             'body' => self::VALID_BODY,
             'status' => self::VALID_STATUS,
+            'published_at' => null,
         ];
     }
 
@@ -52,12 +53,18 @@ trait WithPost
 
     public function createPosts(int $times = 1, array $attribute = []): Collection
     {
+        $isPublished = ($attribute['status'] ?? PostStatus::Draft->value) === PostStatus::Published->value;
+
         if ($times === 1) {
             $this->posts = new Collection([
-                PostFactory::new()->create($attribute),
+                $isPublished
+                    ? PostFactory::new()->published()->create($attribute)
+                    : PostFactory::new()->create($attribute),
             ]);
         } elseif ($times > 1) {
-            $this->posts = PostFactory::times($times)->create($attribute);
+            $this->posts = $isPublished
+                ? PostFactory::times($times)->published()->create($attribute)
+                : PostFactory::times($times)->create($attribute);
         }
 
         return $this->posts;

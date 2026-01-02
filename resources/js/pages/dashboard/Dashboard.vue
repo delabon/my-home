@@ -17,3 +17,4 @@ const page = usePage();
         <div class="mt-10"></div>
     </DashboardLayout>
 </template>
+

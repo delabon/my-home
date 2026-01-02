@@ -18,5 +18,4 @@ it('returns an Inertia response successfully', function () {
     expect($inertiaResponse)->toBeInstanceOf(InertiaResponse::class)
         ->and($response)->toBeInstanceOf(Response::class)
         ->and($response->status())->toBe(Response::HTTP_OK);
-
 });

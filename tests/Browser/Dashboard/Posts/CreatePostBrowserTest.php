@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 use App\Enums\PostStatus;
 use App\Models\Post;
+use Illuminate\Support\Carbon;
 use Tests\NewPost;
 use Tests\NewUser;
 
 it('creates a new post successfully', function () {
     $user = new NewUser()->login($this)->user;
     $postData = NewPost::validPostData();
+    $postData['status'] = PostStatus::Published->value;
 
     $page = visit(route('posts.create'));
 
@@ -37,6 +39,8 @@ it('creates a new post successfully', function () {
         ->and($firstPost->slug)->toBe($postData['slug'])
         ->and($firstPost->body)->toBe('<p>'.$postData['body'].'</p>')
         ->and($firstPost->status)->toBe(PostStatus::Published)
+        ->and($firstPost->published_at)->toBeInstanceOf(Carbon::class)
+        ->and($firstPost->published_at->timestamp)->toBeLessThanOrEqual($nowTimestamp)
         ->and($firstPost->created_at->timestamp)->toBeLessThanOrEqual($nowTimestamp)
         ->and($firstPost->updated_at->timestamp)->toBeLessThanOrEqual($nowTimestamp);
 });

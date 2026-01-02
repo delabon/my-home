@@ -17,7 +17,7 @@ defineProps({
         <div class="flex flex-col gap-3">
             <Menu/>
             <h1 class="text-3xl text-white">{{ post.data.title }}</h1>
-            <span>{{ post.data.formatted_created_at }}</span>
+            <span>{{ post.data.formatted_published_at }}</span>
         </div>
 
         <div class="mt-10 page-content" v-html="post.data.body"></div>

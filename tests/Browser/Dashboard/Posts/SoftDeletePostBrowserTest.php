@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Enums\PostStatus;
 use App\Models\Post;
 use Tests\NewPost;
 use Tests\NewUser;
@@ -10,12 +11,13 @@ it('soft deletes a post successfully', function () {
     $user = new NewUser()->login($this)->user;
     $post = new NewPost([
         'user_id' => $user->id,
+        'status' => PostStatus::Published->value,
     ])->first();
 
     $page = visit(route('posts.edit', $post));
 
     $page->click('Delete Post')
-        ->wait(3)
+        ->wait(2)
         ->assertRoute('posts.index')
         ->wait(1)
         ->assertDontSee($post->title)

@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Actions\Posts\PaginatePostsAction;
+use App\Enums\OrderDirection;
+use App\Enums\PostStatus;
 use App\Http\Resources\PostResource;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -16,7 +18,12 @@ final class HomeController extends Controller
 
     public function __invoke(Request $request, PaginatePostsAction $action): Response
     {
-        $posts = $action->execute(perPage: self::PER_PAGE);
+        $posts = $action->execute(
+            perPage: self::PER_PAGE,
+            status: PostStatus::Published,
+            orderColumn: 'published_at',
+            orderDirection: OrderDirection::Desc
+        );
 
         return Inertia::render('Home', [
             'title' => config('app.homepage.title', ''),

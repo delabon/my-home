@@ -32,6 +32,7 @@ final class PostFactory extends Factory
     {
         return $this->state([
             'status' => PostStatus::Published,
+            'published_at' => fake()->dateTimeThisYear(),
         ]);
     }
 }

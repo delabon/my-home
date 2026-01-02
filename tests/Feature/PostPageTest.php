@@ -22,7 +22,7 @@ it('renders the post page successfully', function () {
                 ->where('post.data.title', $post->title)
                 ->where('post.data.slug', $post->slug)
                 ->where('post.data.body', $post->body)
-                ->where('post.data.formatted_created_at', $post->formatted_created_at);
+                ->where('post.data.formatted_published_at', $post->formatted_published_at);
         });
 });
 

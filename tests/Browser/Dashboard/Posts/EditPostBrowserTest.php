@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Enums\PostStatus;
 use App\Models\Post;
+use Illuminate\Support\Carbon;
 use Tests\NewPost;
 use Tests\NewUser;
 
@@ -62,6 +63,8 @@ it('updates a post successfully', function () {
         ->and($post->slug)->toBe($updatedPostData['slug'])
         ->and($post->body)->toBe('<p>'.$updatedPostData['body'].'</p>')
         ->and($post->status)->toBe(PostStatus::Published)
+        ->and($post->published_at)->toBeInstanceOf(Carbon::class)
+        ->and($post->published_at->timestamp)->toBeGreaterThanOrEqual($oldCreatedAtTimestamp)
         ->and($post->created_at->timestamp)->toBe($oldCreatedAtTimestamp)
         ->and($post->updated_at->timestamp)->toBeGreaterThanOrEqual($oldUpdatedAtTimestamp);
 });
