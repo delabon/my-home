@@ -15,7 +15,9 @@ final class EditPostAction
         $isPublished = $dto->status === PostStatus::Published;
         $postData = $dto->toArray();
         $postData['published_at'] = $isPublished
-            ? now()
+            ? $post->status === PostStatus::Published
+                ? $post->published_at
+                : now()
             : null;
 
         $post->update($postData);

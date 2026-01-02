@@ -55,6 +55,6 @@ final class Post extends Model
 
     public function getFormattedPublishedAtAttribute(): ?string
     {
-        return $this->published_at?->format(self::DATE_FORMAT) ?? null;
+        return $this->published_at?->format(self::DATE_FORMAT);
     }
 }
