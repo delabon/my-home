@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read string $slug
  * @property-read string $body
  * @property-read PostStatus $status
+ * @property-read CarbonInterface|null $published_at
  * @property-read CarbonInterface $created_at
  * @property-read CarbonInterface $updated_at
  */
@@ -31,10 +32,12 @@ final class Post extends Model
         'slug',
         'body',
         'status',
+        'published_at',
     ];
 
     protected $casts = [
         'status' => PostStatus::class,
+        'published_at' => 'datetime',
     ];
 
     /**

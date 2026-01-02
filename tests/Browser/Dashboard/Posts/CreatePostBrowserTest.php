@@ -10,6 +10,7 @@ use Tests\NewUser;
 it('creates a new post successfully', function () {
     $user = new NewUser()->login($this)->user;
     $postData = NewPost::validPostData();
+    $postData['status'] = PostStatus::Published->value;
 
     $page = visit(route('posts.create'));
 

@@ -61,6 +61,7 @@ it('returns too many requests response when trying to abuse the store post endpo
 it('creates a post successfully', function () {
     $user = new NewUser()->login($this)->user;
     $postData = NewPost::validPostData();
+    $postData['status'] = PostStatus::Published->value;
 
     $response = $this->post(
         route('posts.store'),
@@ -81,6 +82,7 @@ it('creates a post successfully', function () {
         ->and($firstPost->slug)->toBe($postData['slug'])
         ->and($firstPost->body)->toBe($postData['body'])
         ->and($firstPost->status)->toBe(PostStatus::Published)
+        ->and($firstPost->published_at->timestamp)->toBeLessThanOrEqual($nowTimestamp)
         ->and($firstPost->created_at->timestamp)->toBeLessThanOrEqual($nowTimestamp)
         ->and($firstPost->updated_at->timestamp)->toBeLessThanOrEqual($nowTimestamp);
 });

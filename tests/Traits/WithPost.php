@@ -17,7 +17,7 @@ trait WithPost
 
     public const string VALID_BODY = 'This is a valid post body it should be more than 20 chars';
 
-    public const string VALID_STATUS = PostStatus::Published->value;
+    public const string VALID_STATUS = PostStatus::Draft->value;
 
     public Collection $posts;
 
@@ -28,6 +28,7 @@ trait WithPost
             'slug' => self::VALID_SLUG,
             'body' => self::VALID_BODY,
             'status' => self::VALID_STATUS,
+            'published_at' => null,
         ];
     }
 
