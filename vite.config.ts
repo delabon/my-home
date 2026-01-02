@@ -26,4 +26,25 @@ export default defineConfig({
         }),
         vueDevTools(),
     ],
+    build: {
+        minify: true,
+        sourcemap: false,
+        rollupOptions: {
+            output: {
+                manualChunks: (path) => {
+                    if (path.includes("axios")) {
+                        return "axios";
+                    }
+
+                    if (path.includes("tiptap")) {
+                        return "tiptap";
+                    }
+
+                    if (path.includes("node_modules")) {
+                        return "vendor";
+                    }
+                }
+            }
+        }
+    }
 });
