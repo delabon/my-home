@@ -27,6 +27,7 @@ final class PaginatePostsAction
             )
             ->when(
                 ! empty($orderColumn),
+                /** @phpstan-ignore argument.type */
                 static fn ($q) => $q->orderBy($orderColumn, $orderDirection->value)
             )
             ->simplePaginate(perPage: $perPage);
