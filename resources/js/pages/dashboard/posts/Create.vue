@@ -2,11 +2,12 @@
 import { Head, Form } from '@inertiajs/vue3';
 import posts from "@/routes/posts";
 import Input from "@/components/ui/Input.vue";
-import Textarea from "@/components/ui/Textarea.vue";
 import Button from "@/components/ui/Button.vue";
 import Select from "@/components/ui/Select.vue";
 import DashboardLayout from "@/layouts/DashboardLayout.vue";
 import DashboardMenu from "@/components/ui/DashboardMenu.vue";
+import { ref } from 'vue';
+import Tiptap from "@/components/ui/Tiptap.vue";
 
 defineProps({
     statuses: {
@@ -14,6 +15,11 @@ defineProps({
         required: true,
     }
 });
+
+const title = ref('');
+const slug = ref('');
+const body = ref('');
+const status = ref('draft');
 </script>
 
 <template>
@@ -40,6 +46,7 @@ defineProps({
                     label="Title"
                     type="text"
                     name="title"
+                    v-model="title"
                     :error="errors.title"
                     autocomplete="title"
                 />
@@ -48,19 +55,22 @@ defineProps({
                     label="Slug"
                     type="text"
                     name="slug"
+                    v-model="slug"
                     :error="errors.slug"
                     autocomplete="slug"
                 />
 
-                <Textarea
-                    label="Body"
+                <Tiptap
+                    label="Body (Markdown)"
                     name="body"
+                    v-model="body"
                     :error="errors.body"
                 />
 
                 <Select
                     label="Status"
                     name="status"
+                    v-model="status"
                     :options="Object.values(statuses)"
                     placeholder="Select..."
                     :error="errors.status"

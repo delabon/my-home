@@ -21,6 +21,7 @@
         "prettier": "^3.4.2",
         "prettier-plugin-organize-imports": "^4.1.0",
         "prettier-plugin-tailwindcss": "^0.6.11",
+        "sass-embedded": "^1.97.1",
         "typescript-eslint": "^8.23.0",
         "vite-plugin-vue-devtools": "^8.0.5",
         "vue-tsc": "^2.2.4"
@@ -28,6 +29,9 @@
     "dependencies": {
         "@inertiajs/vue3": "^2.3.3",
         "@tailwindcss/vite": "^4.1.17",
+        "@tiptap/pm": "^3.14.0",
+        "@tiptap/starter-kit": "^3.14.0",
+        "@tiptap/vue-3": "^3.14.0",
         "@vitejs/plugin-vue": "^6.0.0",
         "@vueuse/core": "^12.8.2",
         "class-variance-authority": "^0.7.1",

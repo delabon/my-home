@@ -5,9 +5,9 @@ import posts from "@/routes/posts";
 import Button from "@/components/ui/Button.vue";
 import Input from "@/components/ui/Input.vue";
 import Select from "@/components/ui/Select.vue";
-import Textarea from "@/components/ui/Textarea.vue";
 import DashboardLayout from "@/layouts/DashboardLayout.vue";
 import DashboardMenu from "@/components/ui/DashboardMenu.vue";
+import Tiptap from "@/components/ui/Tiptap.vue";
 
 const props = defineProps({
     post: {
@@ -81,8 +81,8 @@ const status = ref(props.post.status || 'draft');
                     autocomplete="slug"
                 />
 
-                <Textarea
-                    label="Body"
+                <Tiptap
+                    label="Body (Markdown)"
                     name="body"
                     v-model="body"
                     :error="errors.body"
