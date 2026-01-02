@@ -20,6 +20,6 @@ it('returns the resource array', function () {
             'slug' => $post->slug,
             'status' => $post->status->value,
             'body' => $post->body,
-            'formatted_created_at' => $post->formatted_created_at,
+            'formatted_published_at' => $post->formatted_published_at,
         ]);
 });

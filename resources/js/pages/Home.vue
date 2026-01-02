@@ -34,7 +34,7 @@ defineProps({
                     <h3 class="text-xl">
                         <Link :href="`/blog/${post.slug}`" class="hover:underline hover:text-white">{{ post.title }}</Link>
                     </h3>
-                    <span class="text-sm">{{ post.formatted_created_at }}</span>
+                    <span class="text-sm">{{ post.formatted_published_at }}</span>
                 </article>
             </div>
             <p v-else>

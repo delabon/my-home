@@ -53,12 +53,18 @@ trait WithPost
 
     public function createPosts(int $times = 1, array $attribute = []): Collection
     {
+        $isPublished = ($attribute['status'] ?? PostStatus::Draft->value) === PostStatus::Published->value;
+
         if ($times === 1) {
             $this->posts = new Collection([
-                PostFactory::new()->create($attribute),
+                $isPublished
+                    ? PostFactory::new()->published()->create($attribute)
+                    : PostFactory::new()->create($attribute),
             ]);
         } elseif ($times > 1) {
-            $this->posts = PostFactory::times($times)->create($attribute);
+            $this->posts = $isPublished
+                ? PostFactory::times($times)->published()->create($attribute)
+                : PostFactory::times($times)->create($attribute);
         }
 
         return $this->posts;

@@ -23,6 +23,27 @@ it('renders the home page component with posts and pagination', function () {
                 ->where('posts.data.0.id', $posts[0]->id)
                 ->where('posts.data.0.title', $posts[0]->title)
                 ->where('posts.data.0.slug', $posts[0]->slug)
-                ->where('posts.data.0.formatted_created_at', $posts[0]->formatted_created_at);
+                ->where('posts.data.0.formatted_published_at', $posts[0]->formatted_published_at);
+        });
+});
+
+it('renders the home page component with only published posts', function () {
+    $publishedPosts = new NewPost([
+        'status' => PostStatus::Published->value,
+    ], 2)->posts;
+    new NewPost([
+        'status' => PostStatus::Draft->value,
+    ], 3)->posts;
+    $response = $this->get(route('home'));
+
+    $response
+        ->assertOk()
+        ->assertInertia(function (AssertableInertia $component) use ($publishedPosts) {
+            $component->component('Home')
+                ->has('posts.data', 2)
+                ->where('posts.data.0.id', $publishedPosts[0]->id)
+                ->where('posts.data.0.title', $publishedPosts[0]->title)
+                ->where('posts.data.1.id', $publishedPosts[1]->id)
+                ->where('posts.data.1.title', $publishedPosts[1]->title);
         });
 });

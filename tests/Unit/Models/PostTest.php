@@ -69,12 +69,21 @@ test('status should be unique', function () {
     })->toThrow(UniqueConstraintViolationException::class);
 });
 
-it('formats the created_at date correctly', function () {
+it('formats the published_at date correctly', function () {
     $now = now();
     $post = new NewPost([
-        'created_at' => $now,
+        'status' => PostStatus::Published->value,
+        'published_at' => $now,
     ])->first();
 
-    expect($post->formatted_created_at)->toBeString()
-        ->and($post->formatted_created_at)->toBe($now->format(Post::DATE_FORMAT));
+    expect($post->formatted_published_at)->toBeString()
+        ->and($post->formatted_published_at)->toBe($now->format(Post::DATE_FORMAT));
+});
+
+test('formatted_published_at returns null when the post is not published', function () {
+    $post = new NewPost([
+        'status' => PostStatus::Draft->value,
+    ])->first();
+
+    expect($post->formatted_published_at)->toBeNull();
 });

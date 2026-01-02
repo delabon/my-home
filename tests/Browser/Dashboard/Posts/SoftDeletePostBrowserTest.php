@@ -17,7 +17,7 @@ it('soft deletes a post successfully', function () {
     $page = visit(route('posts.edit', $post));
 
     $page->click('Delete Post')
-        ->wait(3)
+        ->wait(2)
         ->assertRoute('posts.index')
         ->wait(1)
         ->assertDontSee($post->title)

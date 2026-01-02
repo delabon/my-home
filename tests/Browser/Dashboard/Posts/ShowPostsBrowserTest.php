@@ -6,9 +6,12 @@ use App\Enums\PostStatus;
 use Tests\NewPost;
 use Tests\NewUser;
 
-it('displays the published posts successfully', function () {
+it('displays all posts successfully', function () {
     new NewUser()->login($this)->user;
-    $posts = new NewPost([
+    $publishedPosts = new NewPost([
+        'status' => PostStatus::Published->value,
+    ], 2)->posts;
+    $draftPosts = new NewPost([
         'status' => PostStatus::Published->value,
     ], 2)->posts;
 
@@ -16,8 +19,10 @@ it('displays the published posts successfully', function () {
 
     $page->assertTitle('All Posts - '.config('app.name'))
         ->assertSee('All Posts')
-        ->assertSee($posts[0]->title)
-        ->assertSee($posts[1]->title);
+        ->assertSee($publishedPosts[0]->title)
+        ->assertSee($publishedPosts[1]->title)
+        ->assertSee($draftPosts[0]->title)
+        ->assertSee($draftPosts[1]->title);
 });
 
 it('displays empty posts message when no posts available', function () {

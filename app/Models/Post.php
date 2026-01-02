@@ -53,8 +53,8 @@ final class Post extends Model
         return $query->where('status', PostStatus::Published);
     }
 
-    public function getFormattedCreatedAtAttribute(): string
+    public function getFormattedPublishedAtAttribute(): ?string
     {
-        return $this->created_at->format(self::DATE_FORMAT);
+        return $this->published_at?->format(self::DATE_FORMAT) ?? null;
     }
 }

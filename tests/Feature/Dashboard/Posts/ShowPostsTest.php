@@ -17,6 +17,7 @@ it('renders the posts page successfully', function () {
         'status' => PostStatus::Published->value,
     ], 3)->posts;
 
+
     $response = $this->get(route('posts.index'));
 
     $response->assertOk()
@@ -29,15 +30,16 @@ it('renders the posts page successfully', function () {
         );
 });
 
-it('only fetches the published posts', function () {
+it('fetches all kinds of posts', function () {
     $user = new NewUser()->login($this)->user;
-    $posts = new NewPost([
+    $publishedPosts = new NewPost([
+        'user_id' => $user->id,
+        'status' => PostStatus::Published->value,
+    ], 2)->posts;
+    $draftPosts = new NewPost([
         'user_id' => $user->id,
         'status' => PostStatus::Draft->value,
     ], 2)->posts;
-    $posts[0]->update([
-        'status' => PostStatus::Published,
-    ]);
 
     $response = $this->get(route('posts.index'));
 
@@ -45,8 +47,11 @@ it('only fetches the published posts', function () {
         ->assertInertia(static fn (AssertableInertia $page) => $page->component('dashboard/posts/Index')
             ->has('posts')
             ->has('posts.data')
-            ->count('posts.data', 1)
-            ->where('posts.data.0.id', $posts[0]->id)
+            ->count('posts.data', 4)
+            ->where('posts.data.0.id', $publishedPosts[0]->id)
+            ->where('posts.data.1.id', $publishedPosts[1]->id)
+            ->where('posts.data.2.id', $draftPosts[0]->id)
+            ->where('posts.data.3.id', $draftPosts[1]->id)
         );
 });
 
