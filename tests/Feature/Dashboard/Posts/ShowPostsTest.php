@@ -17,7 +17,6 @@ it('renders the posts page successfully', function () {
         'status' => PostStatus::Published->value,
     ], 3)->posts;
 
-
     $response = $this->get(route('posts.index'));
 
     $response->assertOk()
