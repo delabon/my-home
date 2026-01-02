@@ -47,3 +47,27 @@ it('renders the home page component with only published posts', function () {
                 ->where('posts.data.1.title', $publishedPosts[1]->title);
         });
 });
+
+it('renders the home page component with sorted published posts in descending order', function () {
+    $postOne = new NewPost([
+        'status' => PostStatus::Published->value,
+        'published_at' => now()->subDay(),
+    ])->first();
+    $postTwo = new NewPost([
+        'status' => PostStatus::Published->value,
+        'published_at' => now(),
+    ])->first();
+    new NewPost([
+        'status' => PostStatus::Draft->value,
+    ])->first();
+    $response = $this->get(route('home'));
+
+    $response
+        ->assertOk()
+        ->assertInertia(function (AssertableInertia $component) use ($postOne, $postTwo) {
+            $component->component('Home')
+                ->has('posts.data', 2)
+                ->where('posts.data.0.id', $postTwo->id)
+                ->where('posts.data.1.id', $postOne->id);
+        });
+});

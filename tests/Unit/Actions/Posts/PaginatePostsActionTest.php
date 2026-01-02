@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Actions\Posts\PaginatePostsAction;
+use App\Enums\OrderDirection;
 use App\Enums\PostStatus;
 use Illuminate\Pagination\Paginator;
 use Tests\NewPost;
@@ -200,4 +201,54 @@ it('paginates the next page', function () {
         ->and($paginationData['data'])->toHaveCount(1)
         ->and($paginationData['data'][0]['id'])->toBe($posts[2]->id)
         ->and($paginationData['data'][0]['status'])->toBe(PostStatus::Published->value);
+});
+
+it('paginates posts by field in descending order', function () {
+    $postOne = new NewPost([
+        'status' => PostStatus::Published->value,
+        'published_at' => now()->subDay(),
+    ])->first();
+    $postTwo = new NewPost([
+        'status' => PostStatus::Published->value,
+        'published_at' => now(),
+    ])->first();
+    $action = new PaginatePostsAction();
+
+    $paginatedPosts = $action->execute(
+        orderColumn: 'published_at',
+        orderDirection: OrderDirection::Desc
+    );
+
+    $paginationData = $paginatedPosts->toArray();
+
+    expect($paginatedPosts)->toBeInstanceOf(Paginator::class)
+        ->and($paginationData)->toHaveKeys([
+            'data',
+        ])
+        ->and($paginationData['data'])->toBeArray()
+        ->and($paginationData['data'])->toHaveCount(2)
+        ->and($paginationData['data'][0]['id'])->toBe($postTwo->id)
+        ->and($paginationData['data'][1]['id'])->toBe($postOne->id);
+});
+
+it('paginates posts by field in ascending order', function () {
+    $postOne = new NewPost()->first();
+    $postTwo = new NewPost()->first();
+    $action = new PaginatePostsAction();
+
+    $paginatedPosts = $action->execute(
+        orderColumn: 'id',
+        orderDirection: OrderDirection::Asc
+    );
+
+    $paginationData = $paginatedPosts->toArray();
+
+    expect($paginatedPosts)->toBeInstanceOf(Paginator::class)
+        ->and($paginationData)->toHaveKeys([
+            'data',
+        ])
+        ->and($paginationData['data'])->toBeArray()
+        ->and($paginationData['data'])->toHaveCount(2)
+        ->and($paginationData['data'][0]['id'])->toBe($postOne->id)
+        ->and($paginationData['data'][1]['id'])->toBe($postTwo->id);
 });
