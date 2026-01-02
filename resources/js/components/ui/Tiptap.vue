@@ -49,7 +49,7 @@ watch(() => props.modelValue, (value) => {
 
         <editor-content
             :editor="editor"
-            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" />
+            :class="`tiptap-${name} bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body`" />
 
         <span v-if="error" class="text-red-500 block w-full">
             {{ error }}

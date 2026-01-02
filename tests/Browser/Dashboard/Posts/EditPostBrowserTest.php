@@ -45,7 +45,7 @@ it('updates a post successfully', function () {
     $page
         ->fill('[name="title"]', $updatedPostData['title'])
         ->fill('[name="slug"]', $updatedPostData['slug'])
-        ->fill('[name="body"]', $updatedPostData['body'])
+        ->fill('.tiptap-body .tiptap', $updatedPostData['body'])
         ->select('[name="status"]', $updatedPostData['status'])
         ->click('Save')
         ->wait(3)
@@ -60,7 +60,7 @@ it('updates a post successfully', function () {
         ->and($post->user_id)->toBe($user->id)
         ->and($post->title)->toBe($updatedPostData['title'])
         ->and($post->slug)->toBe($updatedPostData['slug'])
-        ->and($post->body)->toBe($updatedPostData['body'])
+        ->and($post->body)->toBe('<p>'.$updatedPostData['body'].'</p>')
         ->and($post->status)->toBe(PostStatus::Published)
         ->and($post->created_at->timestamp)->toBe($oldCreatedAtTimestamp)
         ->and($post->updated_at->timestamp)->toBeGreaterThanOrEqual($oldUpdatedAtTimestamp);
