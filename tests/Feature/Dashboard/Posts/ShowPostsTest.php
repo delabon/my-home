@@ -61,7 +61,7 @@ it('redirects guests to login page when trying to access the dashboard posts pag
 });
 
 it('renders the posts page component with sorted posts in descending order', function () {
-    $user = new NewUser()->login($this)->user;
+    new NewUser()->login($this)->user;
     $postOne = new NewPost([
         'status' => PostStatus::Published->value,
         'published_at' => now()->subDay(),
