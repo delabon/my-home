@@ -1,45 +1,47 @@
-<script setup>
+<script setup lang="ts">
 import StarterKit from '@tiptap/starter-kit'
 import { useEditor, EditorContent } from '@tiptap/vue-3'
 import { watch } from 'vue'
 
-const props = defineProps({
-    modelValue: {
-        type: String,
-        default: '',
-    },
-    label: {
-        type: String,
-        default: null,
-    },
-    name: {
-        type: String,
-        required: true,
-    },
-    error: {
-        type: String,
-        default: null,
-    },
+interface Props {
+    modelValue?: string
+    label?: string | null
+    name: string
+    error?: string | null
+}
+
+const props = withDefaults(defineProps<Props>(), {
+    modelValue: '',
+    label: null,
+    error: null,
 })
 
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits<{
+    (e: 'update:modelValue', value: string): void
+}>()
 
 const editor = useEditor({
     extensions: [StarterKit],
     content: props.modelValue,
     onUpdate: () => {
-        emit('update:modelValue', editor.value.getHTML())
+        if (editor.value) {
+            emit('update:modelValue', editor.value.getHTML())
+        }
     },
 })
 
 watch(() => props.modelValue, (value) => {
+    if (!editor.value) {
+        return
+    }
+
     const isSame = editor.value.getHTML() === value
 
     if (isSame) {
         return
     }
 
-    editor.value.commands.setContent(value, false)
+    editor.value.commands.setContent(value ?? '', false)
 })
 </script>
 
@@ -88,6 +90,14 @@ watch(() => props.modelValue, (value) => {
             margin-top: 0.25em;
             margin-bottom: 0.25em;
         }
+    }
+
+    ol {
+        list-style-type: decimal;
+    }
+
+    ul {
+        list-style-type: disc;
     }
 
     /* Heading styles */
