@@ -26,7 +26,7 @@ final class PaginatePostsAction
                 static fn ($q) => $q->where('status', $status)
             )
             ->when(
-                !empty($orderColumn),
+                ! empty($orderColumn),
                 static fn ($q) => $q->orderBy($orderColumn, $orderDirection->value)
             )
             ->simplePaginate(perPage: $perPage);
